@@ -1522,25 +1522,34 @@ def get_temp_email(fname, lname, domain_choice=None):
     return f"{prefix}@{domain}"
 
 def get_temp_code(email):
-    try:
-        sess = requests.Session()
-        headers = {
-            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36",
-            "accept": "application/json",
-            "cookie": f"email={email}"
-        }
-        res = sess.get(f'https://tempmail.plus/api/mails?email={email}&first_id=0&epin', headers=headers)
-        data = res.json()
-
-        if data.get("result") and data.get("mail_list"):
-            for mail in data["mail_list"]:
-                if mail.get("is_new"):
+    _ua = "Mozilla/5.0 (Linux; Android 13; SM-A546E; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/124.0.6367.82 Mobile Safari/537.36 [FBAN/Lite;FBAV/503.0.0.10.107;FBBV/562352462;FBDM/{density=2.625,width=1080,height=2280};FBLC/en_PH;FBOP/1]"
+    for attempt in range(8):
+        try:
+            sess = requests.Session()
+            headers = {
+                "user-agent": _ua,
+                "accept": "application/json, text/plain, */*",
+                "accept-language": "en-PH,en;q=0.9",
+                "referer": "https://tempmail.plus/",
+                "x-requested-with": "XMLHttpRequest",
+                "cookie": f"email={email}"
+            }
+            res = sess.get(
+                f'https://tempmail.plus/api/mails?email={email}&first_id=0&epin',
+                headers=headers, timeout=10
+            )
+            data = res.json()
+            if data.get("result") and data.get("mail_list"):
+                for mail in data["mail_list"]:
                     subject = mail.get("subject", "")
-                    code = re.search(r"(\d+)", subject)
-                    return code.group(1) if code else subject
-        return None
-    except:
-        return None
+                    body = str(mail.get("text", "")) + str(mail.get("html", ""))
+                    code = re.search(r'\b(\d{5,8})\b', subject) or re.search(r'\b(\d{5,8})\b', body)
+                    if code:
+                        return code.group(1)
+            time.sleep(2)
+        except Exception:
+            time.sleep(2)
+    return None
 
 def get_bd_number():
     na = random.choice(['77', '78', '59'])
@@ -1580,6 +1589,47 @@ DEVICE_POOL = [
     {"model": "Xiaomi POCO M6 Pro", "ua": "Mozilla/5.0 (Linux; Android 13; 23076PC4BI) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "2.75", "vw": "393", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
 ]
 
+FBLITE_DEVICE_POOL = [
+    {"model": "Samsung Galaxy A54", "android": "13", "build": "SM-A546E", "density": "2.625", "w": "1080", "h": "2340", "dpr": "2.625", "vw": "412"},
+    {"model": "Samsung Galaxy A34", "android": "13", "build": "SM-A346B", "density": "2.0",   "w": "1080", "h": "2408", "dpr": "2.0",   "vw": "412"},
+    {"model": "Samsung Galaxy A14", "android": "13", "build": "SM-A145R", "density": "2.0",   "w": "1080", "h": "2408", "dpr": "2.0",   "vw": "360"},
+    {"model": "Samsung Galaxy A23", "android": "12", "build": "SM-A235F", "density": "2.0",   "w": "1080", "h": "2400", "dpr": "2.0",   "vw": "384"},
+    {"model": "Samsung Galaxy A05s", "android": "13", "build": "SM-A057F", "density": "2.0",  "w": "1080", "h": "2400", "dpr": "2.0",   "vw": "384"},
+    {"model": "Xiaomi Redmi Note 12", "android": "13", "build": "23028RA60L", "density": "2.75", "w": "1080", "h": "2400", "dpr": "2.75", "vw": "393"},
+    {"model": "Xiaomi Redmi 12", "android": "13", "build": "23053RN02Y", "density": "2.0",   "w": "720",  "h": "1600", "dpr": "2.0",   "vw": "393"},
+    {"model": "Xiaomi Redmi 10C", "android": "11", "build": "220333QAG", "density": "2.0",   "w": "720",  "h": "1600", "dpr": "2.0",   "vw": "393"},
+    {"model": "OPPO A78", "android": "13", "build": "CPH2483", "density": "2.0",   "w": "1080", "h": "2400", "dpr": "2.0",   "vw": "412"},
+    {"model": "OPPO A58", "android": "13", "build": "CPH2577", "density": "2.0",   "w": "1080", "h": "2400", "dpr": "2.0",   "vw": "412"},
+    {"model": "OPPO A18", "android": "13", "build": "CPH2591", "density": "1.5",   "w": "720",  "h": "1612", "dpr": "1.5",   "vw": "412"},
+    {"model": "vivo Y36", "android": "13", "build": "V2248", "density": "2.625", "w": "1080", "h": "2408", "dpr": "2.625", "vw": "412"},
+    {"model": "vivo Y22s", "android": "12", "build": "V2206", "density": "2.0",   "w": "1080", "h": "2408", "dpr": "2.0",   "vw": "412"},
+    {"model": "vivo Y16", "android": "12", "build": "V2204", "density": "1.5",   "w": "720",  "h": "1612", "dpr": "1.5",   "vw": "412"},
+    {"model": "Realme C55", "android": "13", "build": "RMX3710", "density": "2.0",   "w": "1080", "h": "2400", "dpr": "2.0",   "vw": "393"},
+    {"model": "Realme C35", "android": "11", "build": "RMX3511", "density": "2.0",   "w": "1080", "h": "2408", "dpr": "2.0",   "vw": "393"},
+    {"model": "Tecno Camon 20", "android": "13", "build": "CK6n", "density": "2.0",   "w": "1080", "h": "2400", "dpr": "2.0",   "vw": "412"},
+    {"model": "Infinix Hot 40", "android": "13", "build": "X6836", "density": "2.0",   "w": "720",  "h": "1612", "dpr": "2.0",   "vw": "412"},
+    {"model": "Motorola Moto G84", "android": "13", "build": "XT2347-3", "density": "2.625", "w": "1080", "h": "2400", "dpr": "2.625", "vw": "412"},
+    {"model": "Xiaomi POCO M6 Pro", "android": "13", "build": "23076PC4BI", "density": "2.75", "w": "1080", "h": "2400", "dpr": "2.75", "vw": "393"},
+]
+
+FBLITE_VERSION = "503.0.0.10.107"
+FBLITE_BUILD   = "562352462"
+FBLITE_LANGS   = ["en_PH", "en_PH", "en_PH", "fil_PH", "en_US"]
+
+def get_fblite_device():
+    d = random.choice(FBLITE_DEVICE_POOL)
+    lang = random.choice(FBLITE_LANGS)
+    wv_ua = (
+        f"Mozilla/5.0 (Linux; Android {d['android']}; {d['build']}; wv) "
+        f"AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/124.0.6367.82 Mobile Safari/537.36 "
+        f"[FBAN/Lite;FBAV/{FBLITE_VERSION};FBBV/{FBLITE_BUILD};"
+        f"FBDM/{{density={d['density']},width={d['w']},height={d['h']}}};"
+        f"FBLC/{lang};FBOP/1]"
+    )
+    d['ua'] = wv_ua
+    d['lang'] = lang
+    return d
+
 def get_device():
     return random.choice(DEVICE_POOL)
 
@@ -1592,9 +1642,17 @@ def save_result(uid, password, cookie):
     with open(f"{folder}/SUCCESS-OK.txt", "a") as f:
         f.write(f"{uid}|{password}|{cookie}\n")
 
-def confirm_id(mail, uid, otp, data, ses, password):
+def confirm_id(mail, uid, otp, data, ses, password, device=None):
     try:
-        url = "https://m.facebook.com/confirmation_cliff/"
+        if device is None:
+            device = get_fblite_device()
+        fb_dtsg_match = re.search(r'"token":"([^"]+)"', str(data))
+        fb_dtsg = fb_dtsg_match.group(1) if fb_dtsg_match else ""
+        jazoest_match = re.search(r'name="jazoest" value="(\d+)"', str(data))
+        jazoest = jazoest_match.group(1) if jazoest_match else ""
+        lsd_match = re.search(r'name="lsd" value="([^"]+)"', str(data))
+        lsd = lsd_match.group(1) if lsd_match else ""
+
         params = {
             'contact': mail,
             'type': "submit",
@@ -1602,53 +1660,45 @@ def confirm_id(mail, uid, otp, data, ses, password):
             'medium': "email",
             'code': otp
         }
-        fb_dtsg_match = re.search(r'"token":"([^"]+)"', str(data))
-        fb_dtsg = fb_dtsg_match.group(1) if fb_dtsg_match else ""
-
-        jazoest_match = re.search(r'name="jazoest" value="(\d+)"', str(data))
-        jazoest = jazoest_match.group(1) if jazoest_match else ""
-
-        lsd_match = re.search(r'name="lsd" value="([^"]+)"', str(data))
-        lsd = lsd_match.group(1) if lsd_match else ""
-
         payload = {
             'fb_dtsg': fb_dtsg,
             'jazoest': jazoest,
             'lsd': lsd,
-            '__dyn': "",
+            '__dyn': "7xe6WByk5Q9UoHaEWBTCGiEsi9oi2q0Bo1qexi4N6oniE98XwFw",
             '__csr': "",
             '__req': "4",
-            '__fmt': "1",
-            '__a': "",
-            '__user': uid
+            '__a': "1",
+            '__user': uid,
+            '__rev': "1017688608",
+            '__s': f"{random.randint(100000,999999)}:0:0",
+            '__hsi': str(random.randint(7000000000000000000, 7999999999999999999)),
+            '__comet_req': "0",
+            'fb_api_caller_class': "RelayModern",
+            'fb_api_req_friendly_name': "MConfirmEmailMutation",
         }
+        lang = device.get('lang', 'en_PH')
         headers = {
-            'User-Agent': ugen(),
-            'Accept-Encoding': "gzip, deflate, br, zstd",
-            'sec-ch-ua-full-version-list': "",
-            'sec-ch-ua-platform': "\"Android\"",
-            'sec-ch-ua': "\"Android WebView\";v=\"131\", \"Chromium\";v=\"131\", \"Not_A Brand\";v=\"24\"",
-            'sec-ch-ua-model': "\"\"",
-            'sec-ch-ua-mobile': "?1",
-            'x-asbd-id': "129477",
-            'x-fb-lsd': "KnpjLz-YdSXR3zBqds98cK",
-            'sec-ch-prefers-color-scheme': "light",
-            'sec-ch-ua-platform-version': "\"\"",
-            'origin': "https://m.facebook.com",
-            'x-requested-with': "mark.via.gp",
-            'sec-fetch-site': "same-origin",
-            'sec-fetch-mode': "cors",
-            'sec-fetch-dest': "empty",
-            'referer': "https://m.facebook.com/confirmemail.php?next=https%3A%2F%2Fm.facebook.com%2F%3Fdeoia%3D1&soft=hjk",
-            'accept-language': "en-GB,en-US;q=0.9,en;q=0.8",
-            'priority': "u=1, i"
+            'user-agent': device['ua'],
+            'accept': '*/*',
+            'accept-encoding': 'gzip, deflate, br',
+            'accept-language': f'{lang.replace("_","-")},en;q=0.9',
+            'content-type': 'application/x-www-form-urlencoded',
+            'origin': 'https://m.facebook.com',
+            'referer': f'https://m.facebook.com/confirmemail.php?next=https%3A%2F%2Fm.facebook.com%2F%3Fdeoia%3D1',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-origin',
+            'x-asbd-id': '129477',
+            'x-fb-lsd': lsd,
+            'x-requested-with': 'com.facebook.lite',
+            'dpr': device['dpr'],
+            'viewport-width': device['vw'],
         }
-        response = ses.post(url, params=params, data=payload, headers=headers)
-        if "checkpoint" in str(response.url):
-            pass
-        else:
+        url = "https://m.facebook.com/confirmation_cliff/"
+        response = ses.post(url, params=params, data=payload, headers=headers, timeout=15)
+        if "checkpoint" not in str(response.url) and "checkpoint" not in response.text[:500]:
             cookie = ";".join([f"{k}={v}" for k, v in ses.cookies.get_dict().items()])
-            print(Panel(f"{G}[{Y}✓{G}]{W} UID: {G}{uid}\n{G}[{Y}✓{G}]{W} PASS: {G}{password}\n{G}[{Y}✓{G}]{W} COOKIE: {G}{cookie}\n", title="SUCCESS",border_style="bold green"))
+            print(Panel(f"{G}[{Y}✓{G}]{W} UID: {G}{uid}\n{G}[{Y}✓{G}]{W} PASS: {G}{password}\n{G}[{Y}✓{G}]{W} COOKIE: {G}{cookie}\n", title="SUCCESS", border_style="bold green"))
             save_result(uid, password, cookie)
     except Exception:
         pass
@@ -1657,10 +1707,15 @@ def register_account(domain_choice, name_option, gender_option):
     global live, cp
     while True:
         try:
-            device = get_device()
+            device = get_fblite_device()
             ses = requests.Session()
-            ses.headers.update({'user-agent': device['ua']})
-            res = ses.get('https://m.facebook.com/reg/')
+            adapter = requests.adapters.HTTPAdapter(max_retries=3)
+            ses.mount('https://', adapter)
+            ses.headers.update({
+                'user-agent': device['ua'],
+                'x-requested-with': 'com.facebook.lite',
+            })
+            res = ses.get('https://m.facebook.com/reg/', timeout=15)
             form = extract_form(res.text)
 
             if gender_option == "1":
@@ -1718,39 +1773,35 @@ def register_account(domain_choice, name_option, gender_option):
                 'lsd': form.get('lsd'),
                 '__dyn': '', '__csr': '', '__req': 'q', '__a': '', '__user': '0'
             }
+            lang = device.get('lang', 'en_PH')
             headers = {
                 'authority': 'm.facebook.com',
                 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                'accept-language': random.choice([
-                    'en-PH,en-US;q=0.9,en;q=0.8',
-                    'en-US,en;q=0.9',
-                    'fil-PH,fil;q=0.9,en-US;q=0.8,en;q=0.7',
-                    'en-GB,en;q=0.9',
-                    'en-US;q=0.8,en;q=0.7'
-                ]),
+                'accept-language': f'{lang.replace("_","-")},en-US;q=0.9,en;q=0.8',
+                'accept-encoding': 'gzip, deflate, br',
                 'cache-control': 'max-age=0',
+                'content-type': 'application/x-www-form-urlencoded',
                 'dpr': device['dpr'],
-                'referer': 'https://m.facebook.com/login/save-device/',
-                'sec-ch-prefers-color-scheme': random.choice(['light', 'dark']),
-                'sec-ch-ua': device['sec_ch_ua'],
-                'sec-ch-ua-mobile': '?1',
-                'sec-ch-ua-platform': device['platform'],
+                'viewport-width': device['vw'],
+                'origin': 'https://m.facebook.com',
+                'referer': 'https://m.facebook.com/reg/',
                 'sec-fetch-dest': 'document',
                 'sec-fetch-mode': 'navigate',
                 'sec-fetch-site': 'same-origin',
                 'sec-fetch-user': '?1',
                 'upgrade-insecure-requests': '1',
                 'user-agent': device['ua'],
-                'viewport-width': device['vw']
+                'x-requested-with': 'com.facebook.lite',
+                'x-fb-friendly-name': 'MRegisterMutation',
             }
-            reg = ses.post(_reg_url, data=payload, headers=headers)
+            reg = ses.post(_reg_url, data=payload, headers=headers, timeout=20)
             cookies = ses.cookies.get_dict()
             if "c_user" in cookies:
                 uid = cookies["c_user"]
-                print(Panel(f"{G}[{Y}✓{G}]{W} LIVE ID CREATED: {G}{uid}\n{G}[{Y}✓{G}]{W} PASS: {G}{password}\n{G}[{Y}✓{G}]{W} NAME: {G}{fname} {lname}\n{G}[{Y}✓{G}]{W} MAIL: {G}{email}\n{G}[{Y}✓{G}]{W} DEVICE: {C}{device['model']}",border_style="bold green"))
+                print(Panel(f"{G}[{Y}✓{G}]{W} LIVE: {G}{uid}\n{G}[{Y}✓{G}]{W} PASS: {G}{password}\n{G}[{Y}✓{G}]{W} NAME: {G}{fname} {lname}\n{G}[{Y}✓{G}]{W} MAIL: {G}{email}\n{G}[{Y}✓{G}]{W} DEV: {C}{device['model']}", border_style="bold green"))
                 code = get_temp_code(email)
                 if code:
-                    confirm_id(email, uid, code, reg.text, ses, password)
+                    confirm_id(email, uid, code, reg.text, ses, password, device)
                 live += 1
                 break
             else:
@@ -1798,10 +1849,10 @@ def main():
 
         threads = []
         for _ in range(limit):
-            t = threading.Thread(target=register_account, args=(domain_choice, name_option, gender_option))
+            t = threading.Thread(target=register_account, args=(domain_choice, name_option, gender_option), daemon=True)
             t.start()
             threads.append(t)
-            time.sleep(1)
+            time.sleep(0.2)
 
         for t in threads:
             t.join()
