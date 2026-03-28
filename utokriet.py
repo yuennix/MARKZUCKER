@@ -1,6 +1,6 @@
 #=====SC SEND BY > KALYAN KING
 #=====TELIGERM :, OX CYBER TEAM
-import os, re, time, json, random, threading, uuid, hashlib
+import os, re, time, json, random, threading
 import requests
 from faker import Faker
 from fake_useragent import UserAgent
@@ -1458,63 +1458,6 @@ def logo():
     print(logx)
 
 
-# ── Device fingerprint models used by real FB Lite installs ──────────────
-_DEVICE_MODELS = [
-    ("Redmi 9A",      "Xiaomi",   "10", "2.0", "720",  "1520"),
-    ("Redmi Note 10", "Xiaomi",   "11", "2.0", "1080", "2400"),
-    ("Samsung A03s",  "samsung",  "11", "2.0", "720",  "1600"),
-    ("Samsung A14",   "samsung",  "13", "2.5", "1080", "2408"),
-    ("TECNO Spark 8", "TECNO",    "11", "2.0", "720",  "1600"),
-    ("Infinix Hot 12","Infinix",  "12", "2.0", "720",  "1612"),
-    ("vivo Y16",      "vivo",     "12", "2.0", "720",  "1612"),
-    ("OPPO A15",      "OPPO",     "10", "2.0", "720",  "1600"),
-    ("realme C21",    "realme",   "10", "2.0", "720",  "1600"),
-    ("Nokia G21",     "Nokia",    "12", "2.0", "720",  "1600"),
-]
-
-# FB Lite APK version pool (realistic build numbers)
-_FBLITE_VERSIONS = [
-    ("387.0.0.29.110", "457428721", "461072168"),
-    ("391.0.0.39.101", "462033281", "466145812"),
-    ("393.0.0.11.102", "463544823", "467672948"),
-    ("395.0.0.28.108", "465021104", "469183423"),
-    ("397.0.0.17.104", "466538201", "470716334"),
-]
-
-def gen_device_fingerprint():
-    """Generate a consistent per-account device fingerprint that mimics FB Lite."""
-    model, mfr, android_ver, density, width, height = random.choice(_DEVICE_MODELS)
-    fbav, fbbv, fbrv = random.choice(_FBLITE_VERSIONS)
-    # Stable UUIDs derived from a random seed (consistent within one account)
-    seed = uuid.uuid4().hex
-    device_id  = str(uuid.UUID(hashlib.md5((seed + "dev").encode()).hexdigest()))
-    adid       = str(uuid.UUID(hashlib.md5((seed + "adid").encode()).hexdigest()))
-    android_id = hashlib.sha1((seed + "aid").encode()).hexdigest()[:16]
-    return {
-        "model":       model,
-        "manufacturer": mfr,
-        "android_ver": android_ver,
-        "density":     density,
-        "width":       width,
-        "height":      height,
-        "fbav":        fbav,
-        "fbbv":        fbbv,
-        "fbrv":        fbrv,
-        "device_id":   device_id,
-        "adid":        adid,
-        "android_id":  android_id,
-    }
-
-def build_fblite_ua(fp):
-    """Build a User-Agent string identical to real Facebook Lite."""
-    return (
-        f"[FBAN/FBLite;FBAV/{fp['fbav']};FBBV/{fp['fbbv']};"
-        f"FBDM/{{density={fp['density']},width={fp['width']},height={fp['height']}}};"
-        f"FBLC/en_US;FBRV/{fp['fbrv']};FBCR/;FBMF/{fp['manufacturer']};"
-        f"FBBD/{fp['manufacturer']};FBPN/com.facebook.lite;FBDV/{fp['model']};"
-        f"FBSV/{fp['android_ver']};FBOP/1;FBCA/arm64-v8a:]"
-    )
-
 def fake_password(custom=None):
     if custom:
         return str(custom)
@@ -1546,31 +1489,26 @@ def get_temp_email(fname, lname, domain_choice=None):
 
     return f"{prefix}@{domain}"
 
-def get_temp_code(email, retries=12, delay=2):
-    """Poll tempmail.plus for the Facebook confirmation code with retries."""
-    sess = requests.Session()
-    headers = {
-        "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36",
-        "accept": "application/json",
-        "cookie": f"email={email}"
-    }
-    for _ in range(retries):
-        try:
-            res = sess.get(
-                f'https://tempmail.plus/api/mails?email={email}&first_id=0&epin',
-                headers=headers, timeout=6
-            )
-            data = res.json()
-            if data.get("result") and data.get("mail_list"):
-                for mail in data["mail_list"]:
+def get_temp_code(email):
+    try:
+        sess = requests.Session()
+        headers = {
+            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36",
+            "accept": "application/json",
+            "cookie": f"email={email}"
+        }
+        res = sess.get(f'https://tempmail.plus/api/mails?email={email}&first_id=0&epin', headers=headers)
+        data = res.json()
+
+        if data.get("result") and data.get("mail_list"):
+            for mail in data["mail_list"]:
+                if mail.get("is_new"):
                     subject = mail.get("subject", "")
-                    code = re.search(r"\b(\d{5,8})\b", subject)
-                    if code:
-                        return code.group(1)
-        except Exception:
-            pass
-        time.sleep(delay)
-    return None
+                    code = re.search(r"(\d+)", subject)
+                    return code.group(1) if code else subject
+        return None
+    except:
+        return None
 
 def get_bd_number():
     na = random.choice(['77', '78', '59'])
@@ -1586,43 +1524,14 @@ def extract_form(html):
 def ugen():
     return ua.random
 
-def get_save_folder():
-    """Return a save folder that works on both Android (Termux) and Replit/Linux."""
-    candidates = ["/sdcard/ZUYAN", os.path.join(os.path.expanduser("~"), "ZUYAN")]
-    for c in candidates:
-        try:
-            os.makedirs(c, exist_ok=True)
-            test = os.path.join(c, ".write_test")
-            open(test, "w").close()
-            os.remove(test)
-            return c
-        except Exception:
-            continue
-    fallback = os.path.join(os.getcwd(), "ZUYAN")
-    os.makedirs(fallback, exist_ok=True)
-    return fallback
+def save_result(uid, password, cookie):
+    folder = "/sdcard/ZUYAN"
+    os.makedirs(folder, exist_ok=True)
+    with open(f"{folder}/SUCCESS-OK.txt", "a") as f:
+        f.write(f"{uid}|{password}|{cookie}\n")
 
-def save_result(uid, password, cookie, email="", fp=None):
-    folder = get_save_folder()
-    line = f"{uid}|{password}|{cookie}"
-    if email:
-        line += f"|{email}"
-    with open(os.path.join(folder, "SUCCESS-OK.txt"), "a") as f:
-        f.write(line + "\n")
-    if fp:
-        fp_line = json.dumps({
-            "uid": uid, "password": password, "email": email,
-            "device_id": fp["device_id"], "adid": fp["adid"],
-            "android_id": fp["android_id"], "model": fp["model"],
-            "android_ver": fp["android_ver"], "fblite_ver": fp["fbav"]
-        })
-        with open(os.path.join(folder, "FINGERPRINTS.txt"), "a") as f:
-            f.write(fp_line + "\n")
-
-def confirm_id(mail, uid, otp, data, ses, password, fp, email):
-    """Confirm email using FB Lite native-app headers to avoid fingerprint mismatch."""
+def confirm_id(mail, uid, otp, data, ses, password):
     try:
-        lite_ua = build_fblite_ua(fp)
         url = "https://m.facebook.com/confirmation_cliff/"
         params = {
             'contact': mail,
@@ -1652,72 +1561,57 @@ def confirm_id(mail, uid, otp, data, ses, password, fp, email):
             '__user': uid
         }
         headers = {
-            'User-Agent': lite_ua,
-            'Accept-Encoding': "gzip, deflate, br",
-            'Accept': "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            'Accept-Language': "en-US,en;q=0.5",
-            'X-FB-Connection-Type': "MOBILE.LTE",
-            'X-FB-HTTP-Engine': "Liger",
-            'X-FB-Client-IP': "True",
-            'X-FB-Server-Cluster': "True",
-            'X-FB-Device-Group': fp["device_id"],
-            'Origin': "https://m.facebook.com",
-            'Referer': "https://m.facebook.com/confirmemail.php?next=https%3A%2F%2Fm.facebook.com%2F%3Fdeoia%3D1",
+            'User-Agent': ugen(),
+            'Accept-Encoding': "gzip, deflate, br, zstd",
+            'sec-ch-ua-full-version-list': "",
+            'sec-ch-ua-platform': "\"Android\"",
+            'sec-ch-ua': "\"Android WebView\";v=\"131\", \"Chromium\";v=\"131\", \"Not_A Brand\";v=\"24\"",
+            'sec-ch-ua-model': "\"\"",
+            'sec-ch-ua-mobile': "?1",
+            'x-asbd-id': "129477",
+            'x-fb-lsd': "KnpjLz-YdSXR3zBqds98cK",
+            'sec-ch-prefers-color-scheme': "light",
+            'sec-ch-ua-platform-version': "\"\"",
+            'origin': "https://m.facebook.com",
+            'x-requested-with': "mark.via.gp",
+            'sec-fetch-site': "same-origin",
+            'sec-fetch-mode': "cors",
+            'sec-fetch-dest': "empty",
+            'referer': "https://m.facebook.com/confirmemail.php?next=https%3A%2F%2Fm.facebook.com%2F%3Fdeoia%3D1&soft=hjk",
+            'accept-language': "en-GB,en-US;q=0.9,en;q=0.8",
+            'priority': "u=1, i"
         }
-        response = ses.post(url, params=params, data=payload, headers=headers, timeout=8)
+        response = ses.post(url, params=params, data=payload, headers=headers)
         if "checkpoint" in str(response.url):
             pass
         else:
             cookie = ";".join([f"{k}={v}" for k, v in ses.cookies.get_dict().items()])
-            print(Panel(
-                f"{G}[{Y}✓{G}]{W} UID: {G}{uid}\n"
-                f"{G}[{Y}✓{G}]{W} PASS: {G}{password}\n"
-                f"{G}[{Y}✓{G}]{W} EMAIL: {G}{email}\n"
-                f"{G}[{Y}✓{G}]{W} DEVICE: {G}{fp['model']} (Android {fp['android_ver']})\n"
-                f"{G}[{Y}✓{G}]{W} COOKIE: {G}{cookie}\n",
-                title="SUCCESS", border_style="bold green"
-            ))
-            save_result(uid, password, cookie, email=email, fp=fp)
+            print(Panel(f"{G}[{Y}✓{G}]{W} UID: {G}{uid}\n{G}[{Y}✓{G}]{W} PASS: {G}{password}\n{G}[{Y}✓{G}]{W} COOKIE: {G}{cookie}\n", title="SUCCESS",border_style="bold green"))
+            save_result(uid, password, cookie)
     except Exception:
         pass
 
 def register_account(domain_choice, name_option, gender_option):
-    """Register using Facebook Lite native-app headers with per-account device fingerprint."""
     global live, cp
     while True:
         try:
-            fp = gen_device_fingerprint()
-            lite_ua = build_fblite_ua(fp)
-
             ses = requests.Session()
-            # -- Step 1: Fetch registration form using FB Lite headers --
-            reg_headers_get = {
-                'User-Agent': lite_ua,
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                'Accept-Language': 'en-US,en;q=0.5',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'X-FB-Connection-Type': 'MOBILE.LTE',
-                'X-FB-HTTP-Engine': 'Liger',
-                'X-FB-Client-IP': 'True',
-                'X-FB-Server-Cluster': 'True',
-                'X-FB-Device-Group': fp['device_id'],
-                'Referer': 'https://m.facebook.com/',
-                'Connection': 'keep-alive',
-                'Upgrade-Insecure-Requests': '1',
-            }
-            res = ses.get('https://m.facebook.com/reg/', headers=reg_headers_get, timeout=8)
+            res = ses.get('https://m.facebook.com/reg/')
             form = extract_form(res.text)
 
-            # -- Pick gender / name --
             if gender_option == "1":
-                gender = "2"; g_type = "male"
+                gender = "2"
+                g_type = "male"
             elif gender_option == "2":
-                gender = "1"; g_type = "female"
+                gender = "1"
+                g_type = "female"
             else:
                 if random.random() < 0.5:
-                    gender = "2"; g_type = "male"
+                    gender = "2"
+                    g_type = "male"
                 else:
-                    gender = "1"; g_type = "female"
+                    gender = "1"
+                    g_type = "female"
 
             if name_option == "1":
                 first_names = FILIPINO_FIRST_NAMES_MALE if g_type == "male" else FILIPINO_FIRST_NAMES_FEMALE
@@ -1728,25 +1622,22 @@ def register_account(domain_choice, name_option, gender_option):
 
             fname = random.choice(first_names)
             lname = random.choice(last_names)
+
             email = get_temp_email(fname, lname, domain_choice)
             password = fake_password(globals().get('CUSTOM_PASS'))
 
             from urllib.parse import quote as _uq
             _pt = form.get('privacy_mutation_token', '')
             if _pt:
-                _reg_url = (f"https://m.facebook.com/reg/submit/"
-                            f"?privacy_mutation_token={_uq(_pt)}"
-                            f"&multi_step_form=1&skip_suma=0&shouldForceMTouch=1")
+                _reg_url = f"https://m.facebook.com/reg/submit/?privacy_mutation_token={_uq(_pt)}&multi_step_form=1&skip_suma=0&shouldForceMTouch=1"
             else:
-                _reg_url = ("https://m.facebook.com/reg/submit/"
-                            "?multi_step_form=1&skip_suma=0&shouldForceMTouch=1")
+                _reg_url = "https://m.facebook.com/reg/submit/?multi_step_form=1&skip_suma=0&shouldForceMTouch=1"
 
-            # -- Step 2: Submit registration using FB Lite headers --
             payload = {
                 'ccp': '2',
-                'reg_instance': form.get('reg_instance', ''),
-                'reg_impression_id': form.get('reg_impression_id', ''),
-                'logger_id': form.get('logger_id', ''),
+                'reg_instance': form.get('reg_instance'),
+                'reg_impression_id': form.get('reg_impression_id'),
+                'logger_id': form.get('logger_id'),
                 'firstname': fname,
                 'lastname': lname,
                 'birthday_day': str(random.randint(1, 28)),
@@ -1759,65 +1650,44 @@ def register_account(domain_choice, name_option, gender_option):
                 'submit': 'Sign Up',
                 'privacy_mutation_token': _pt,
                 'fb_dtsg': form.get('fb_dtsg', ''),
-                'jazoest': form.get('jazoest', ''),
-                'lsd': form.get('lsd', ''),
-                '__dyn': '', '__csr': '', '__req': 'q', '__a': '', '__user': '0',
-                'client_country_code': 'PH',
-                'adid': fp['adid'],
-                'device_id': fp['device_id'],
-                'android_id': fp['android_id'],
+                'jazoest': form.get('jazoest'),
+                'lsd': form.get('lsd'),
+                '__dyn': '', '__csr': '', '__req': 'q', '__a': '', '__user': '0'
             }
-            reg_headers_post = {
-                'User-Agent': lite_ua,
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                'Accept-Language': 'en-US,en;q=0.5',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-FB-Connection-Type': 'MOBILE.LTE',
-                'X-FB-HTTP-Engine': 'Liger',
-                'X-FB-Client-IP': 'True',
-                'X-FB-Server-Cluster': 'True',
-                'X-FB-Device-Group': fp['device_id'],
-                'Origin': 'https://m.facebook.com',
-                'Referer': 'https://m.facebook.com/reg/',
-                'Connection': 'keep-alive',
-                'Upgrade-Insecure-Requests': '1',
+            headers = {
+                'authority': 'm.facebook.com',
+                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+                'accept-language': 'en-US;q=0.8,en;q=0.7',
+                'cache-control': 'max-age=0',
+                'dpr': '2',
+                'referer': 'https://m.facebook.com/login/save-device/',
+                'sec-ch-prefers-color-scheme': 'light',
+                'sec-ch-ua': '"Not/A)Brand";v="8", "Chromium";v="125", "Google Chrome";v="125"',
+                'sec-ch-ua-mobile': '?1',
+                'sec-ch-ua-platform': '"Android"',
+                'sec-fetch-dest': 'document',
+                'sec-fetch-mode': 'navigate',
+                'sec-fetch-site': 'same-origin',
+                'sec-fetch-user': '?1',
+                'upgrade-insecure-requests': '1',
+                'user-agent': ugen(),
+                'viewport-width': '980'
             }
-            reg = ses.post(_reg_url, data=payload, headers=reg_headers_post, timeout=8)
+            reg = ses.post(_reg_url, data=payload, headers=headers)
             cookies = ses.cookies.get_dict()
-
             if "c_user" in cookies:
                 uid = cookies["c_user"]
-                print(Panel(
-                    f"{G}[{Y}✓{G}]{W} LIVE ID: {G}{uid}\n"
-                    f"{G}[{Y}✓{G}]{W} PASS: {G}{password}\n"
-                    f"{G}[{Y}✓{G}]{W} NAME: {G}{fname} {lname}\n"
-                    f"{G}[{Y}✓{G}]{W} MAIL: {G}{email}\n"
-                    f"{G}[{Y}✓{G}]{W} DEVICE: {G}{fp['model']} (Android {fp['android_ver']})\n"
-                    f"{G}[{Y}✓{G}]{W} FB LITE: {G}{fp['fbav']}",
-                    border_style="bold green"
-                ))
-                # -- Step 3: Auto-confirm email via tempmail.plus --
+                print(Panel(f"{G}[{Y}✓{G}]{W} LIVE ID CREATED: {G}{uid}\n{G}[{Y}✓{G}]{W} PASS: {G}{password}\n{G}[{Y}✓{G}]{W} NAME: {G}{fname} {lname}\n{G}[{Y}✓{G}]{W} MAIL: {G}{email}",border_style="bold green"))
                 code = get_temp_code(email)
                 if code:
-                    confirm_id(email, uid, code, reg.text, ses, password, fp, email)
-                else:
-                    # Save even without auto-confirmation so user can confirm manually in FB Lite
-                    cookie = ";".join([f"{k}={v}" for k, v in ses.cookies.get_dict().items()])
-                    save_result(uid, password, cookie, email=email, fp=fp)
-                    print(Panel(
-                        f"{R}[!]{W} Email code not found — confirm manually in FB Lite\n"
-                        f"{G}EMAIL: {email}\n{G}PASS: {password}",
-                        title="MANUAL CONFIRM NEEDED", border_style="bold yellow"
-                    ))
+                    confirm_id(email, uid, code, reg.text, ses, password)
                 live += 1
                 break
             else:
                 cp += 1
-                time.sleep(random.uniform(0.3, 0.8))
                 continue
         except requests.exceptions.ConnectionError:
-            time.sleep(0.5)
+            time.sleep(1)
             continue
         except Exception:
             cp += 1
@@ -1851,8 +1721,8 @@ def main():
         CUSTOM_PASS = custom_pass_input if custom_pass_input else None
 
         clear(); logo()
-        print(Panel(f"{G}[1] {W}yuennix.site\n{G}[2] {W}weyn.store {Y}(recommended - manual confirm compatible)\n{G}[3] {W}Mixed (Random)\n{G}[b] {W}Back", title="DOMAIN SELECTION", border_style="bold green"))
-        domain_choice = Prompt.ask(f"{G}[{Y}✓{G}]{W} Choose Email Option ", choices=["1", "2", "3", "b"], default="2")
+        print(Panel(f"{G}[1] {W}yuennix.site\n{G}[2] {W}weyn.store\n{G}[3] {W}Mixed (Random)\n{G}[b] {W}Back", title="DOMAIN SELECTION", border_style="bold green"))
+        domain_choice = Prompt.ask(f"{G}[{Y}✓{G}]{W} Choose Email Option ", choices=["1", "2", "3", "b"], default="3")
         if domain_choice == 'b': continue
 
         clear(); logo()
@@ -1868,7 +1738,7 @@ def main():
             t = threading.Thread(target=register_account, args=(domain_choice, name_option, gender_option))
             t.start()
             threads.append(t)
-            time.sleep(random.uniform(0.3, 0.6))
+            time.sleep(1)
 
         for t in threads:
             t.join()
