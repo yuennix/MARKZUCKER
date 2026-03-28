@@ -1449,17 +1449,8 @@ def clear():
     os.system("clear")
 #---------------------------#
 def logo():
-    banner = (
-        f"\n"
-        f"  {C}╦ ╦  ╔═╗  ╦ ╦  ╔╗   ╔╦╗  ╔═╗  ╔╦╗  ╔═╗  ╦═╗\n"
-        f"  {Y}║║║  ╠═   ╚╦╝  ║╔╝  ║║║  ╠═╣  ╔╩╗  ╠═   ╠╦╝\n"
-        f"  {G}╚╩╝  ╚═╝   ╩   ╚╝   ╩ ╩  ╩ ╩  ╩ ╩  ╚═╝  ╩╚═\n"
-        f"\n"
-        f"  {W}───────────────────────────────────────────────\n"
-        f"  {Y}⚡ {W}FB ACCOUNT CREATOR  {C}|  {G}v2.0  {C}|  {Y}WEYNMAKER {W}⚡\n"
-    )
-    logx = Panel(banner, border_style="bold cyan", padding=(0, 2))
-    print(logx)
+    line = f"{Y}⚡ {C}WEYNMAKER {W}│ {G}FB ACCOUNT CREATOR {W}│ {Y}v2.0 {W}⚡"
+    print(Panel(line, border_style="bold cyan", padding=(0, 2)))
 
 
 def fake_password(custom=None):
