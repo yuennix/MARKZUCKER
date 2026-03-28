@@ -1470,17 +1470,48 @@ def fake_password(custom=None):
 def get_temp_email(fname, lname, domain_choice=None):
     fname = re.sub(r'\W+', '', fname.lower())
     lname = re.sub(r'\W+', '', lname.lower())
-
-    separators = ['.', '_', '']
-    sep = random.choice(separators)
+    fn = fname
+    ln = lname
+    fi = fname[0] if fname else 'x'
+    li = lname[0] if lname else 'x'
+    yr = random.randint(1990, 2006)
+    n2 = str(random.randint(10, 99))
+    n3 = str(random.randint(100, 999))
+    n4 = str(random.randint(1000, 9999))
+    sfx = random.choice(['ph', 'mnl', 'qc', 'cebu', 'ph2', 'rpw', 'ofic', 'real', '143', 'loves', 'cute', 'ko', 'lang', 'ako'])
+    sep = random.choice(['.', '_', ''])
 
     patterns = [
-        f"{fname}{sep}{lname}",
-        f"{lname}{sep}{fname}",
-        f"{fname[0]}{sep}{lname}",
-        f"{fname}{sep}{lname[0]}",
-        f"{fname}{sep}{lname}{random.randint(1990, 2005)}",
-        f"{fname}{random.randint(10, 99)}"
+        f"{fn}{sep}{ln}",
+        f"{ln}{sep}{fn}",
+        f"{fi}{sep}{ln}",
+        f"{fn}{sep}{li}",
+        f"{fn}{sep}{ln}{n2}",
+        f"{fn}{sep}{ln}{n3}",
+        f"{fn}{sep}{ln}{yr}",
+        f"{fn}{n2}",
+        f"{fn}{n3}",
+        f"{fn}{n4}",
+        f"{ln}{n2}",
+        f"{ln}{sep}{fn}{n2}",
+        f"{fn}{sep}{ln}{sep}{n2}",
+        f"{fi}{ln}{n2}",
+        f"{fi}{ln}{yr}",
+        f"{fn}{li}{n2}",
+        f"{fn}{sep}{sfx}",
+        f"{fn}{sep}{ln}{sep}{sfx}",
+        f"{fn}{sfx}{n2}",
+        f"{fi}{sep}{ln}{sep}{sfx}",
+        f"{fn}{sep}{ln}{yr % 100:02d}",
+        f"{fn}{yr}",
+        f"{ln}{yr}",
+        f"{fn}{sep}{ln[0:3]}",
+        f"{fn[0:3]}{sep}{ln}",
+        f"{fn}{sep}{ln}{sep}{yr}",
+        f"{fi}{li}{n3}",
+        f"{fn}{ln}{n2}",
+        f"{fn}{ln}",
+        f"{fn}_{ln}_{yr}",
     ]
     prefix = random.choice(patterns)
 
@@ -1524,6 +1555,36 @@ def get_bd_number():
 def extract_form(html):
     soup = BeautifulSoup(html, 'html.parser')
     return {tag.get("name"): tag.get("value") for tag in soup.find_all("input") if tag.get("name")}
+
+DEVICE_POOL = [
+    {"model": "Samsung Galaxy A54", "ua": "Mozilla/5.0 (Linux; Android 13; SM-A546E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "2.625", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
+    {"model": "Samsung Galaxy A34", "ua": "Mozilla/5.0 (Linux; Android 13; SM-A346B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.118 Mobile Safari/537.36", "dpr": "2.0", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="123", "Chromium";v="123", "Not-A.Brand";v="99"'},
+    {"model": "Samsung Galaxy S23", "ua": "Mozilla/5.0 (Linux; Android 13; SM-S911B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "3.0", "vw": "360", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
+    {"model": "Samsung Galaxy A14", "ua": "Mozilla/5.0 (Linux; Android 13; SM-A145R) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.6261.119 Mobile Safari/537.36", "dpr": "2.0", "vw": "360", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="122", "Chromium";v="122", "Not-A.Brand";v="99"'},
+    {"model": "Samsung Galaxy A23", "ua": "Mozilla/5.0 (Linux; Android 12; SM-A235F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.178 Mobile Safari/537.36", "dpr": "2.0", "vw": "384", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="121", "Chromium";v="121", "Not-A.Brand";v="99"'},
+    {"model": "Xiaomi Redmi Note 12", "ua": "Mozilla/5.0 (Linux; Android 13; 23028RA60L) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "2.75", "vw": "393", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
+    {"model": "Xiaomi Redmi 12", "ua": "Mozilla/5.0 (Linux; Android 13; 23053RN02Y) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.118 Mobile Safari/537.36", "dpr": "2.0", "vw": "393", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="123", "Chromium";v="123", "Not-A.Brand";v="99"'},
+    {"model": "Xiaomi Redmi 10C", "ua": "Mozilla/5.0 (Linux; Android 11; 220333QAG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.230 Mobile Safari/537.36", "dpr": "2.0", "vw": "393", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="120", "Chromium";v="120", "Not-A.Brand";v="99"'},
+    {"model": "OPPO A78", "ua": "Mozilla/5.0 (Linux; Android 13; CPH2483) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "2.0", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
+    {"model": "OPPO A58", "ua": "Mozilla/5.0 (Linux; Android 13; CPH2577) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.118 Mobile Safari/537.36", "dpr": "2.0", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="123", "Chromium";v="123", "Not-A.Brand";v="99"'},
+    {"model": "OPPO A18", "ua": "Mozilla/5.0 (Linux; Android 13; CPH2591) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.6261.119 Mobile Safari/537.36", "dpr": "1.5", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="122", "Chromium";v="122", "Not-A.Brand";v="99"'},
+    {"model": "vivo Y36", "ua": "Mozilla/5.0 (Linux; Android 13; V2248) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "2.625", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
+    {"model": "vivo Y22s", "ua": "Mozilla/5.0 (Linux; Android 12; V2206) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.178 Mobile Safari/537.36", "dpr": "2.0", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="121", "Chromium";v="121", "Not-A.Brand";v="99"'},
+    {"model": "vivo Y16", "ua": "Mozilla/5.0 (Linux; Android 12; V2204) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.230 Mobile Safari/537.36", "dpr": "1.5", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="120", "Chromium";v="120", "Not-A.Brand";v="99"'},
+    {"model": "Tecno Camon 20", "ua": "Mozilla/5.0 (Linux; Android 13; CK6n) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.118 Mobile Safari/537.36", "dpr": "2.0", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="123", "Chromium";v="123", "Not-A.Brand";v="99"'},
+    {"model": "Realme C55", "ua": "Mozilla/5.0 (Linux; Android 13; RMX3710) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "2.0", "vw": "393", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
+    {"model": "Realme C35", "ua": "Mozilla/5.0 (Linux; Android 11; RMX3511) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.230 Mobile Safari/537.36", "dpr": "2.0", "vw": "393", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="120", "Chromium";v="120", "Not-A.Brand";v="99"'},
+    {"model": "Motorola Moto G84", "ua": "Mozilla/5.0 (Linux; Android 13; XT2347-3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "2.625", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
+    {"model": "Infinix Hot 40", "ua": "Mozilla/5.0 (Linux; Android 13; X6836) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.6261.119 Mobile Safari/537.36", "dpr": "2.0", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="122", "Chromium";v="122", "Not-A.Brand";v="99"'},
+    {"model": "iPhone 14", "ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/124.0.6367.88 Mobile/15E148 Safari/604.1", "dpr": "3.0", "vw": "390", "platform": '"iOS"', "sec_ch_ua": '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"'},
+    {"model": "iPhone 13", "ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_7_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/123.0.6312.52 Mobile/15E148 Safari/604.1", "dpr": "3.0", "vw": "390", "platform": '"iOS"', "sec_ch_ua": '"Chromium";v="123", "Google Chrome";v="123", "Not-A.Brand";v="99"'},
+    {"model": "iPhone SE 2022", "ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/122.0.6261.89 Mobile/15E148 Safari/604.1", "dpr": "2.0", "vw": "375", "platform": '"iOS"', "sec_ch_ua": '"Chromium";v="122", "Google Chrome";v="122", "Not-A.Brand";v="99"'},
+    {"model": "Samsung Galaxy A05s", "ua": "Mozilla/5.0 (Linux; Android 13; SM-A057F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "2.0", "vw": "384", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
+    {"model": "Xiaomi POCO M6 Pro", "ua": "Mozilla/5.0 (Linux; Android 13; 23076PC4BI) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "2.75", "vw": "393", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
+]
+
+def get_device():
+    return random.choice(DEVICE_POOL)
 
 def ugen():
     return ua.random
@@ -1599,7 +1660,9 @@ def register_account(domain_choice, name_option, gender_option):
     global live, cp
     while True:
         try:
+            device = get_device()
             ses = requests.Session()
+            ses.headers.update({'user-agent': device['ua']})
             res = ses.get('https://m.facebook.com/reg/')
             form = extract_form(res.text)
 
@@ -1661,27 +1724,33 @@ def register_account(domain_choice, name_option, gender_option):
             headers = {
                 'authority': 'm.facebook.com',
                 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                'accept-language': 'en-US;q=0.8,en;q=0.7',
+                'accept-language': random.choice([
+                    'en-PH,en-US;q=0.9,en;q=0.8',
+                    'en-US,en;q=0.9',
+                    'fil-PH,fil;q=0.9,en-US;q=0.8,en;q=0.7',
+                    'en-GB,en;q=0.9',
+                    'en-US;q=0.8,en;q=0.7'
+                ]),
                 'cache-control': 'max-age=0',
-                'dpr': '2',
+                'dpr': device['dpr'],
                 'referer': 'https://m.facebook.com/login/save-device/',
-                'sec-ch-prefers-color-scheme': 'light',
-                'sec-ch-ua': '"Not/A)Brand";v="8", "Chromium";v="125", "Google Chrome";v="125"',
+                'sec-ch-prefers-color-scheme': random.choice(['light', 'dark']),
+                'sec-ch-ua': device['sec_ch_ua'],
                 'sec-ch-ua-mobile': '?1',
-                'sec-ch-ua-platform': '"Android"',
+                'sec-ch-ua-platform': device['platform'],
                 'sec-fetch-dest': 'document',
                 'sec-fetch-mode': 'navigate',
                 'sec-fetch-site': 'same-origin',
                 'sec-fetch-user': '?1',
                 'upgrade-insecure-requests': '1',
-                'user-agent': ugen(),
-                'viewport-width': '980'
+                'user-agent': device['ua'],
+                'viewport-width': device['vw']
             }
             reg = ses.post(_reg_url, data=payload, headers=headers)
             cookies = ses.cookies.get_dict()
             if "c_user" in cookies:
                 uid = cookies["c_user"]
-                print(Panel(f"{G}[{Y}✓{G}]{W} LIVE ID CREATED: {G}{uid}\n{G}[{Y}✓{G}]{W} PASS: {G}{password}\n{G}[{Y}✓{G}]{W} NAME: {G}{fname} {lname}\n{G}[{Y}✓{G}]{W} MAIL: {G}{email}",border_style="bold green"))
+                print(Panel(f"{G}[{Y}✓{G}]{W} LIVE ID CREATED: {G}{uid}\n{G}[{Y}✓{G}]{W} PASS: {G}{password}\n{G}[{Y}✓{G}]{W} NAME: {G}{fname} {lname}\n{G}[{Y}✓{G}]{W} MAIL: {G}{email}\n{G}[{Y}✓{G}]{W} DEVICE: {C}{device['model']}",border_style="bold green"))
                 code = get_temp_code(email)
                 if code:
                     confirm_id(email, uid, code, reg.text, ses, password)
