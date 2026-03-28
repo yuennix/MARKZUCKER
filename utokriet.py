@@ -1451,13 +1451,14 @@ def clear():
 def logo():
     banner = (
         f"\n"
-        f"  {C}█░█░█ {Y}█▀▀ {G}█▄█ {C}█▄░█ {Y}█▀▄▀█ {G}▄▀█ {C}█▄▀ {Y}█▀▀ {G}█▀█\n"
-        f"  {C}▀▄▀▄▀ {Y}██▄ {G}░█░ {C}█░▀█ {Y}█░▀░█ {G}█▀█ {C}█░█ {Y}██▄ {G}█▀▄\n"
+        f"  {C}╦ ╦  ╔═╗  ╦ ╦  ╔╗   ╔╦╗  ╔═╗  ╔╦╗  ╔═╗  ╦═╗\n"
+        f"  {Y}║║║  ╠═   ╚╦╝  ║╔╝  ║║║  ╠═╣  ╔╩╗  ╠═   ╠╦╝\n"
+        f"  {G}╚╩╝  ╚═╝   ╩   ╚╝   ╩ ╩  ╩ ╩  ╩ ╩  ╚═╝  ╩╚═\n"
         f"\n"
-        f"  {W}✦━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━✦\n"
-        f"  {Y}⚡ {C}FB ACCOUNT CREATOR {Y}⚡  {G}[ v2.0 ] {W}🔥\n"
+        f"  {W}───────────────────────────────────────────────\n"
+        f"  {Y}⚡ {W}FB ACCOUNT CREATOR  {C}|  {G}v2.0  {C}|  {Y}WEYNMAKER {W}⚡\n"
     )
-    logx = Panel(banner, border_style="bold cyan", padding=(0, 2), title=f"{Y}✦ {C}W E Y N M A K E R {Y}✦", title_align="center")
+    logx = Panel(banner, border_style="bold cyan", padding=(0, 2))
     print(logx)
 
 
@@ -1700,13 +1701,6 @@ def main():
     while True:
         clear()
         logo()
-        info = f"""
-{G}[{Y}✓{G}]{W} OWNER : {G}HULAAN MO
-{G}[{Y}✓{G}]{W} TOOLS : {G}FB ACCOUNT CREATOR
-{G}[{Y}✓{G}]{W} VERSION : {G} TESTERS
-"""
-        print(Panel(info,border_style="bold green"))
-
         print(Panel(f"{G}[1] {W}Filipino Names\n{G}[2] {W}RPW Names\n{G}[b] {W}Back", title="NAME OPTION", border_style="bold green"))
         name_option = Prompt.ask(f"{G}[{Y}✓{G}]{W} Choose Name Option ", choices=["1", "2", "b"], default="1")
         if name_option == 'b': break
