@@ -1546,7 +1546,7 @@ def get_temp_email(fname, lname, domain_choice=None):
 
     return f"{prefix}@{domain}"
 
-def get_temp_code(email, retries=10, delay=5):
+def get_temp_code(email, retries=12, delay=2):
     """Poll tempmail.plus for the Facebook confirmation code with retries."""
     sess = requests.Session()
     headers = {
@@ -1558,7 +1558,7 @@ def get_temp_code(email, retries=10, delay=5):
         try:
             res = sess.get(
                 f'https://tempmail.plus/api/mails?email={email}&first_id=0&epin',
-                headers=headers, timeout=10
+                headers=headers, timeout=6
             )
             data = res.json()
             if data.get("result") and data.get("mail_list"):
@@ -1664,7 +1664,7 @@ def confirm_id(mail, uid, otp, data, ses, password, fp, email):
             'Origin': "https://m.facebook.com",
             'Referer': "https://m.facebook.com/confirmemail.php?next=https%3A%2F%2Fm.facebook.com%2F%3Fdeoia%3D1",
         }
-        response = ses.post(url, params=params, data=payload, headers=headers, timeout=15)
+        response = ses.post(url, params=params, data=payload, headers=headers, timeout=8)
         if "checkpoint" in str(response.url):
             pass
         else:
@@ -1705,7 +1705,7 @@ def register_account(domain_choice, name_option, gender_option):
                 'Connection': 'keep-alive',
                 'Upgrade-Insecure-Requests': '1',
             }
-            res = ses.get('https://m.facebook.com/reg/', headers=reg_headers_get, timeout=15)
+            res = ses.get('https://m.facebook.com/reg/', headers=reg_headers_get, timeout=8)
             form = extract_form(res.text)
 
             # -- Pick gender / name --
@@ -1783,7 +1783,7 @@ def register_account(domain_choice, name_option, gender_option):
                 'Connection': 'keep-alive',
                 'Upgrade-Insecure-Requests': '1',
             }
-            reg = ses.post(_reg_url, data=payload, headers=reg_headers_post, timeout=15)
+            reg = ses.post(_reg_url, data=payload, headers=reg_headers_post, timeout=8)
             cookies = ses.cookies.get_dict()
 
             if "c_user" in cookies:
@@ -1814,10 +1814,10 @@ def register_account(domain_choice, name_option, gender_option):
                 break
             else:
                 cp += 1
-                time.sleep(random.uniform(1.5, 3.0))
+                time.sleep(random.uniform(0.3, 0.8))
                 continue
         except requests.exceptions.ConnectionError:
-            time.sleep(2)
+            time.sleep(0.5)
             continue
         except Exception:
             cp += 1
@@ -1868,7 +1868,7 @@ def main():
             t = threading.Thread(target=register_account, args=(domain_choice, name_option, gender_option))
             t.start()
             threads.append(t)
-            time.sleep(random.uniform(2.0, 4.0))
+            time.sleep(random.uniform(0.3, 0.6))
 
         for t in threads:
             t.join()
