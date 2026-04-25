@@ -1,5 +1,3 @@
-#=====SC SEND BY > KALYAN KING
-#=====TELIGERM :, OX CYBER TEAM
 import os, re, time, json, random, threading
 import requests
 from faker import Faker
@@ -10,8 +8,6 @@ from rich import print
 from rich.panel import Panel
 from rich.console import Console
 from rich.prompt import Prompt
-
-# Global name pools (will be initialized on first use)
 _name_pools = {
 'filipino_male_first': [],
 'filipino_female_first': [],
@@ -20,7 +16,6 @@ _name_pools = {
 'rpw_female_first': [],
 'rpw_last': []
 }
-
 FILIPINO_FIRST_NAMES_MALE = [
 'Juan', 'Jose', 'Miguel', 'Gabriel', 'Rafael', 'Antonio', 'Carlos', 'Luis',
 'Marco', 'Paolo', 'Angelo', 'Joshua', 'Christian', 'Mark', 'John', 'James',
@@ -241,7 +236,6 @@ FILIPINO_FIRST_NAMES_MALE = [
 'Noel', 'Ollie', 'Pierce', 'Rico', 'Stefan', 'Tobias',
 'Uriah', 'Vaughn', 'Wyatt', 'Yves', 'Zion', 'Jerome', 'Jayden', 'Daniel', 'Ezekiel', 'Russell', 'Francis', 'Erwin', 'Kenneth', 'Ramon', 'Leo', 'Brylle', 'Philip', 'Leandro', 'Gerald', 'Jonathan', 'Timothy', 'Earl', 'Harold', 'Mark', 'Ryan', 'Kevin', 'Romeo', 'Dominic', 'Marvin', 'Alexander', 'Joel', 'Ralph', 'Leandro', 'Allan', 'Kian', 'Simon', 'James', 'Alfred', 'Aiden', 'Arvin', 'Earl', 'Thomas', 'Paolo', 'Dominic', 'John', 'Elijah', 'Rene', 'Martin', 'Kian', 'Justin', 'Simon', 'Patrick', 'Lloyd', 'Jose', 'Miguel', 'Elijah', 'Allen', 'Jonathan', 'Marvin', 'Timothy', 'Ronald', 'Dominic', 'Timothy', 'Jeremiah', 'Jeremiah', 'Elijah', 'Rafael', 'Christopher', 'Rowell', 'Kurt', 'Angelo', 'Leonard', 'Jason', 'Reymond', 'Kenzo', 'Elric', 'Samuel', 'Marvin', 'Nelson', 'Clarence', 'Aiden', 'Kian', 'Ramon', 'Kurt', 'Alexander', 'Rome', 'Martin', 'Zachary', 'Erwin', 'Gabriel', 'Christian', 'Adrian', 'Zion', 'Sean', 'Miguel', 'Jayden', 'Gabriel', 'Renz', 'Ian', 'Arnold', 'Carlo', 'Aiden', 'Zion', 'Gerald', 'Jared', 'Carlo', 'Edgar', 'Sean', 'Tony', 'Kevin', 'Jeremiah', 'Carl', 'Paolo', 'Earl', 'Clyde', 'Jeremiah', 'Brylle', 'Kian', 'Robert', 'Brylle', 'Nelson', 'Martin', 'Sean', 'Arthur', 'Roderick', 'Marvin', 'Kenneth', 'Leandro', 'Tony', 'Jacob', 'Miguel', 'Rome', 'Carlo', 'Arvin', 'Axel', 'Noel', 'Zane', 'Ramon', 'Daryl', 'Russell', 'Darren', 'Roland', 'Rafael', 'Joshua', 'Aaron', 'Paolo', 'Eugene', 'Arvin', 'Jason', 'Jared', 'Lance', 'Aiden', 'Daryl', 'Joshua', 'Lawrence', 'Jose', 'Ramon', 'Noah', 'Victor', 'Gerald', 'Alvin', 'Jeffrey', 'Kurt', 'Roland', 'Ramon', 'Carlo', 'Harvey', 'Reymond', 'Allen', 'Victor', 'Adrian', 'Justin', 'Allan', 'Axel', 'Albert', 'Santino', 'Ferdinand', 'Jayden', 'Dominic', 'Vincent', 'Xander', 'Dennis', 'Kenzo', 'Edgar', 'Paolo', 'Leonard', 'Edward', 'Ralph', 'Allen', 'Mathew', 'Lance', 'Christian', 'Dominic', 'Nathan', 'Jonathan', 'Zachary', 'Gilbert', 'Ferdinand', 'Alonzo', 'Joel', 'Mark', 'Timothy', 'Anthony', 'Dean', 'Allen', 'Carl', 'Paolo', 'Carlo', 'Joshua', 'Ryan', 'Robert', 'Ben', 'Alonzo', 'Harley', 'Christian', 'Carl', 'Santino', 'Rico', 'Russell', 'Jonathan', 'Justin', 'Aiden', 'Kurt', 'Anthony', 'Tony', 'Peter', 'Allen', 'Jomar', 'Ralph', 'Ryan', 'Santino', 'Darren', 'Tristan', 'Marco', 'Joseph', 'Jose', 'Vincent', 'Romeo', 'Ronald', 'Clarence', 'Patrick', 'Tristan', 'Carlo', 'Zion', 'Reymond', 'Christopher', 'Christopher', 'Arnold', 'Roderick', 'Alonzo', 'Alvin', 'James', 'Joseph', 'Darren', 'Juan', 'Jeremiah', 'Dean', 'Jay', 'Kyle', 'Joshua', 'Martin', 'Jeremiah', 'Leonard', 'Xander', 'Noel', 'Marvin', 'Santino', 'Peter', 'Bryan', 'Zachary', 'Raymond', 'Alonzo', 'Jayden', 'Jomar', 'Romeo', 'Lucas', 'Jason', 'Rome', 'Thomas', 'Cedrick', 'Martin', 'Dennis', 'Marvin', 'Christopher', 'Kurt', 'Zane', 'Marco', 'Santino', 'Justin', 'Marvin', 'Jared', 'Renz', 'Philip', 'Ralph', 'Dominic', 'Erwin', 'Ralph', 'Paolo', 'Mark', 'Lance', 'Aiden', 'Marvin', 'Aiden', 'Cedric', 'Leonard', 'Alonzo', 'Miguel', 'Ezekiel', 'Jerome', 'Miguel', 'Renz', 'Peter', 'Dean', 'Joel', 'Dominic', 'Jayden', 'Jayden', 'Marvin', 'Carl', 'Leo', 'Ronald', 'Zion', 'Joseph', 'Santino', 'Roderick', 'Elric', 'Dean', 'Harley', 'Tristan', 'Cedrick', 'Carl', 'Mathew', 'Louie', 'Harvey', 'Joshua', 'Zion', 'Brylle', 'Renz', 'Michael', 'Alexander', 'Rome', 'Louis', 'Erwin', 'Ferdinand', 'Enzo', 'Alfred', 'Edward', 'Matteo', 'Jared', 'Gilbert', 'Neil', 'Joseph', 'Dean', 'Russell', 'Arvin', 'Ryan', 'Alonzo', 'Joel', 'Jomar', 'Adrian', 'Allen', 'Jeffrey', 'Ryan', 'Marco', 'Alonzo', 'John', 'Jay', 'Jonathan', 'Peter', 'Neil', 'Enzo', 'Louis', 'Axel', 'Ralph', 'Reymond', 'Cesar', 'Arthur', 'Jayson', 'Jonathan', 'Daryl', 'Jonathan', 'Allen', 'Jose', 'Rey', 'Matteo', 'Elijah', 'Reymond', 'Gabriel', 'Patrick', 'Paul', 'Eugene', 'Bryan', 'Rome', 'Philip', 'Lucas', 'Leonard', 'Jared', 'Gabriel', 'Gabriel', 'Rome', 'Carlo', 'Mathew', 'Ralph', 'Francis', 'Steven', 'Gabriel', 'Isaac', 'Earl', 'Sean', 'Patrick', 'Lawrence', 'Renz', 'Brylle', 'Jonathan', 'Kurt', 'Reymond', 'Joel', 'Leo', 'Kyle', 'Aiden', 'Clarence', 'Isaac', 'Harold', 'Aiden', 'Jethro', 'Patrick', 'Darren', 'Paul', 'Jayson', 'Joshua', 'Tony', 'Ronald', 'Christian', 'Kenneth', 'Clifford', 'Kyle', 'Nelson', 'Ezekiel', 'Alfred', 'Russell', 'Darrel', 'Jayson', 'Vincent', 'Adrian', 'Tony', 'Alexander', 'Dominic', 'Kurt', 'Darren', 'Vincent', 'Lance', 'Christopher', 'Romeo', 'Allen', 'Marco', 'Leo', 'Dennis', 'Harley', 'Mathew', 'Noah', 'Clyde', 'Tony', 'Nelson', 'Francis', 'Jared', 'Alfred', 'Victor', 'Matteo', 'Edgar', 'Harley', 'Tony', 'Victor', 'Brylle', 'Louie', 'Rome', 'Matteo', 'Harvey', 'Philip', 'Jomar', 'Reymond', 'Ryan', 'Aiden', 'Edgar', 'Jerome', 'Joel', 'Cedric', 'Lance', 'Simon', 'Harley', 'Rey', 'Jose', 'Cedrick', 'Tristan', 'Jeremiah', 'Tristan', 'Noah', 'Ryan', 'Leo', 'Kenzo', 'Reymond', 'Daniel', 'Enzo', 'Martin', 'Paul', 'Santino', 'Jared', 'Jared', 'Patrick', 'Joseph', 'Elric', 'Tony', 'Alvin', 'Samuel', 'Steven', 'Lucas', 'Harley', 'Clifford', 'Steven', 'Alvin', 'Raymond', 'Paolo', 'Jeffrey', 'Kenneth', 'Angelo', 'Joshua', 'Joseph', 'Zane', 'Thomas', 'Joshua', 'Noel', 'Martin', 'Neil', 'Carl', 'Anthony', 'Oscar', 'Albert', 'Neil', 'Rome', 'Robert', 'Harold', 'Samuel', 'Daryl', 'Simon', 'Simon', 'Noel', 'Romeo', 'Aiden', 'Joseph', 'Isaac', 'Elijah', 'Lance', 'Axel', 'Raymond', 'Jared', 'Zachary', 'Lloyd', 'Joseph', 'Juan', 'Elric', 'Bryan', 'Clarence', 'Kenzo', 'Rico', 'Simon', 'Jethro', 'Sean', 'Alvin', 'Kenzo', 'Jayson', 'Rico', 'Ferdinand', 'Ramon', 'Angelo', 'Carl', 'Zane', 'Arthur', 'Matteo', 'Daniel', 'Rome', 'Aiden', 'Gabriel', 'Jayson', 'Justin', 'Nelson', 'Elijah', 'Jacob', 'Ezekiel', 'Louis', 'Xander', 'Nelson', 'Ronald', 'Rene', 'Gabriel', 'Samuel', 'Roland', 'Philip', 'Roland', 'Gabriel', 'Alfred', 'Albert', 'Kian', 'Joel', 'Rico', 'Eugene', 'Kurt', 'Tony', 'Edgar', 'Juan', 'Jared', 'Rome', 'Joel', 'Leonard', 'Allen', 'Peter', 'Jeffrey', 'Alfred', 'Arthur', 'Rico', 'Philip', 'Allen', 'Zion', 'Earl', 'Justin', 'Victor', 'Gerald', 'Francis', 'Harley', 'Rome', 'Jared', 'Martin', 'Gabriel', 'Harvey', 'Rico', 'Marco', 'Ryan', 'Brylle', 'Clarence', 'Axel', 'Alonzo', 'Oscar', 'Elijah', 'Brylle', 'Lawrence', 'Oscar', 'Kenzo', 'Emmanuel', 'Jayden', 'Gilbert', 'Angelo', 'Erwin', 'Roland', 'Miguel', 'Jeffrey', 'Leandro', 'Romeo', 'Louie', 'Jeffrey', 'Rowell', 'Rico', 'Emmanuel', 'Martin', 'Elijah', 'Paul', 'Steven', 'Harvey', 'Renz', 'Alfred', 'Lance', 'Kenneth', 'Rene', 'Ezekiel', 'Leandro', 'Jethro', 'James', 'Oscar', 'Peter', 'Russell', 'Justin', 'Alvin', 'Gilbert', 'Carlo', 'Jayden', 'Kian', 'Angelo', 'Timothy', 'Rico', 'Jonathan', 'Jose', 'Philip', 'Kenneth', 'Kenneth', 'Mathew', 'Jason', 'Leonard', 'Timothy', 'Rico', 'Earl', 'Louie', 'Ralph', 'Nelson', 'Simon', 'Santino', 'Lloyd', 'Ryan', 'Jomar', 'Eugene', 'Timothy', 'Edgar', 'Zane', 'Arnold', 'Daryl', 'Paolo', 'Ezekiel', 'Christian', 'Harvey', 'Sean', 'Peter', 'Dean', 'Cedrick', 'Kevin', 'Joseph', 'Ryan', 'Xander', 'Rene', 'Jonathan', 'Sean', 'Rene', 'Richard', 'Samuel', 'Jacob', 'Cedric', 'Mathew', 'Russell', 'Erwin', 'Cedric', 'Gerald', 'Clyde', 'Mathew', 'Marco', 'Jayson', 'Alonzo', 'Elijah', 'Cedric', 'John', 'Samuel', 'Matteo', 'Lance', 'Joel', 'Edgar', 'Isaac', 'Lloyd', 'Allan', 'Alvin', 'Justin', 'Arthur', 'Allen', 'Joseph', 'Daryl', 'Anthony', 'Rene', 'Romeo', 'Thomas', 'Dominic', 'Francis', 'Axel', 'Aiden', 'Cedric', 'Michael', 'Santino', 'Justin', 'Jared', 'Edward', 'Vincent', 'Jacob', 'Christian', 'Adrian', 'Carl', 'Kenzo', 'Joel', 'Zion', 'Louie', 'Edward', 'Ramon', 'Raymond', 'Ian', 'Louie', 'Ferdinand', 'Stephen', 'Edgar', 'Rene', 'Harvey', 'Mark', 'Edward', 'Patrick', 'Clyde', 'Gilbert', 'Gabriel', 'Jerome', 'Patrick', 'Harold', 'Kenneth', 'Ben', 'Ezekiel', 'Jose', 'Paul', 'Ryan', 'Kian', 'Steven', 'Ferdinand', 'Mathew', 'Isaac', 'Ralph', 'Edward', 'Arthur', 'Bryan', 'Eugene', 'Francis', 'Albert', 'Alonzo', 'Philip', 'Victor', 'Clifford', 'Santino', 'Leonard', 'Tony', 'Louis', 'Arnold', 'Rome', 'Sean', 'Neil', 'Neil', 'Alexander', 'Jeffrey', 'Christian', 'Arthur', 'Russell', 'Robert', 'Jerome', 'Leonard', 'Arthur', 'Marco', 'Timothy', 'Richard', 'Rafael', 'Ryan', 'Leo', 'Patrick', 'Bryan', 'Patrick', 'Xander', 'Ezekiel', 'Roderick', 'Bryan', 'Edgar', 'Matteo', 'Jason', 'Noah', 'Zion', 'Zachary', 'Dominic', 'Kyle', 'Ramon', 'Zion', 'Xander', 'Zane', 'Harold', 'Samuel', 'Clarence', 'Patrick', 'Zachary', 'Christopher', 'Ezekiel', 'Ben', 'Kurt', 'Enzo', 'Earl', 'Jared', 'Leonard', 'Edward', 'Zachary', 'Anthony', 'Rico', 'Louis', 'Sean', 'Leo', 'Russell', 'Renz', 'Roderick', 'Francis', 'Rene', 'Victor', 'Jomar', 'Brylle', 'Robert', 'Marco', 'Harvey', 'Harvey', 'Aaron', 'Daryl', 'Erwin', 'Russell', 'Jose', 'Simon', 'Ryan', 'Mathew', 'Simon', 'Erwin', 'Alfred', 'Richard', 'Michael', 'Noah', 'Joshua', 'Miguel', 'Harvey', 'Roderick', 'Stephen', 'Christopher', 'Steven', 'Nelson', 'Joel', 'Alexander', 'Leonard', 'Rene', 'Ezekiel', 'Raymond', 'Harvey', 'Jayden', 'Nathan', 'Richard', 'Miguel', 'Cedrick', 'Erwin', 'Robert', 'Carlo', 'Ferdinand', 'Elijah', 'Lloyd', 'Matteo', 'Jason', 'Patrick', 'Emmanuel', 'Aiden', 'Jeremiah', 'Allan', 'Nelson', 'Axel', 'Kenneth', 'Cedric', 'Kenzo', 'Kyle', 'Russell', 'Cedric', 'Jared', 'Dominic', 'Miguel', 'Noah', 'Peter', 'Christopher', 'Clyde', 'Rowell', 'Jose', 'Victor', 'Raymond', 'Erwin', 'Ronald', 'Cedrick', 'Kenneth', 'James', 'Daryl', 'Zane', 'Kian', 'Nathan', 'Renz', 'Juan', 'Arthur', 'Samuel', 'Arthur', 'Vincent', 'Enzo', 'Romeo', 'Peter', 'Clyde', 'Michael', 'Lucas', 'Tristan', 'Bryan', 'Harvey', 'Paolo', 'Jose', 'Michael', 'Sean', 'Rowell', 'Adrian', 'Juan', 'Christian', 'Ian', 'Gilbert', 'Dominic', 'Jayson', 'Tristan', 'Patrick', 'Michael', 'Sean', 'Santino', 'Jay', 'Allen', 'Clarence', 'Jeremiah', 'Leonard', 'Kenzo', 'Daryl', 'Edward', 'Peter', 'Noah', 'Paul', 'Arvin', 'Sean', 'Louis', 'Albert', 'Harvey', 'Richard', 'Renz', 'Enzo', 'Kevin', 'Darrel', 'Jayden', 'Samuel', 'Zachary', 'Erwin', 'John', 'Kenzo', 'Eugene', 'Robert', 'Ralph', 'Dennis', 'Romeo', 'Romeo', 'Kian', 'Earl', 'Eugene', 'Lance', 'Jayson', 'Eugene', 'Mark', 'Marco', 'Ferdinand', 'Philip', 'Adrian', 'Kevin', 'Michael', 'Gabriel', 'Alvin', 'Timothy', 'Arthur', 'Jayson', 'Aaron', 'Carlo', 'Peter', 'Timothy', 'Carl', 'Jerome', 'Allen', 'Peter', 'Clifford', 'Ramon', 'Allen', 'Marco', 'Philip', 'Santino', 'Matteo', 'Thomas', 'Arnold', 'Enzo', 'Cedric', 'Carlo', 'Steven', 'Renz', 'Stephen', 'Nathan', 'Cedrick', 'Raymond', 'Gilbert', 'Harley', 'Rene', 'Albert', 'Carlo', 'Cedric', 'Leo', 'Timothy', 'Brylle', 'Richard', 'Paolo', 'Roderick', 'Leandro', 'Leonard', 'Bryan', 'Steven', 'Steven', 'Jeremiah', 'Stephen', 'Louie', 'Darren', 'Adrian', 'Harold', 'Roland', 'Jeremiah', 'Harley', 'Adrian', 'Noah', 'Neil', 'Neil', 'Harold', 'Eugene', 'Sean', 'Reymond', 'Zane', 'Alexander', 'Clifford', 'Patrick', 'Rey', 'Jason', 'Earl', 'Joel', 'Paolo', 'Nelson', 'Clyde', 'Harley', 'Reymond', 'Simon', 'Eugene', 'Albert', 'Tristan', 'Juan', 'Arnold', 'Eugene', 'Albert', 'Noel', 'Zion', 'Robert', 'Ronald', 'Matteo', 'Arthur', 'Russell', 'Mathew', 'Ben', 'Rome', 'Ramon', 'Noel', 'Gabriel', 'Darrel', 'Leonard', 'Roderick', 'Ezekiel', 'Aaron', 'Angelo', 'Raymond', 'Emmanuel', 'Jeffrey', 'Kyle', 'Allen', 'Darrel', 'Richard', 'Reymond', 'Matteo', 'Justin', 'Gerald', 'Clifford', 'Peter', 'Harvey', 'Juan', 'Ryan', 'Kian', 'Patrick', 'Alvin', 'Patrick', 'Bryan', 'Gerald', 'Samuel', 'Oscar', 'Paolo', 'Dean', 'Harold', 'John', 'Harley', 'Gerald', 'Russell', 'Rafael', 'Rome', 'Patrick', 'Cedric', 'Simon', 'Jayson', 'Cedric', 'Justin', 'Martin', 'Brylle', 'Emmanuel', 'Stephen', 'Juan', 'Dennis', 'Victor', 'Jared', 'Anthony', 'Gilbert', 'Allen', 'Bryan', 'Kenneth', 'Angelo', 'Romeo', 'Zachary', 'Philip', 'Tristan', 'Juan', 'Michael', 'Carlo', 'Russell', 'Gilbert', 'Steven', 'Bryan', 'Carl', 'Erwin', 'Jason', 'Dennis', 'Brylle', 'James', 'Jeremiah', 'Clyde', 'Alfred', 'Ryan', 'Arnold', 'Kyle', 'Daniel', 'Lance', 'Thomas', 'Rene', 'Patrick', 'Vincent', 'Lloyd', 'Christopher', 'Matteo', 'Alonzo', 'Victor', 'Justin', 'Lawrence', 'Louis', 'Jason', 'Patrick', 'Victor', 'Harvey', 'Ryan', 'Santino', 'Xander', 'Clifford', 'John', 'James', 'Alonzo', 'Jonathan', 'Arvin', 'Edward', 'Gilbert', 'Kian', 'Albert', 'Vincent', 'Harley', 'Harold', 'Clarence', 'Carlo', 'Lloyd', 'Kian', 'Clarence', 'Darrel', 'Adrian', 'Michael', 'Paolo', 'Clarence', 'Tristan', 'Zachary', 'Marco', 'Jeremiah', 'Jeffrey', 'Jomar', 'Joshua', 'Zane', 'Zion', 'Dean', 'Arvin', 'Bryan', 'Nelson', 'Russell', 'John', 'Rene', 'Cedric', 'Gabriel', 'Steven', 'Leo', 'Alexander', 'Ryan', 'Lloyd', 'Zion', 'Leonard', 'Gabriel', 'Noel', 'Mathew', 'Brylle', 'Daryl', 'John', 'Juan', 'Axel', 'Ronald', 'Darrel', 'Francis', 'Carl', 'Robert', 'Raymond', 'Zachary', 'Marco', 'Aiden', 'Joseph', 'Kevin', 'Romeo', 'Kevin', 'Russell', 'Reymond', 'Matteo', 'Kyle', 'Alexander', 'Joseph', 'Earl', 'Stephen', 'Santino', 'Jonathan', 'Vincent', 'Leo', 'Jacob', 'Nathan', 'Paul', 'Ronald', 'Cedric', 'Aiden', 'Ramon', 'Arvin', 'Jayson', 'Cedric', 'James', 'Erwin', 'Ian', 'Kenneth', 'Daniel', 'Rene', 'Ramon', 'Kian', 'Ferdinand', 'Richard', 'Simon', 'Nathan', 'Jacob', 'Santino', 'Carl', 'Thomas', 'Joseph', 'Ezekiel', 'Christopher', 'Timothy', 'Darrel', 'Jomar', 'Jeremiah', 'Jonathan', 'Harley', 'Ryan', 'Victor', 'Xander', 'Jayden', 'Rafael', 'Louis', 'Paul', 'Marco', 'Michael', 'Leo', 'Jayden', 'Emmanuel', 'Daniel', 'Kian', 'Roland', 'Rome', 'Philip', 'Rowell', 'James', 'Darrel', 'Rome', 'Jayson', 'Joshua', 'Eugene', 'Daniel', 'Christian', 'Jay', 'Christian', 'Juan', 'Daryl', 'Adrian', 'Dennis', 'Lloyd', 'Edgar', 'Jacob', 'Thomas', 'Reymond', 'Ben', 'Leonard', 'Neil', 'Jay', 'Santino', 'Martin', 'Jacob', 'Earl', 'Isaac', 'Jonathan', 'Miguel', 'Edward', 'Jacob', 'Joshua', 'Rene', 'Daniel', 'Ralph', 'Peter', 'Kenneth', 'Albert', 'Tony', 'Vincent', 'Ramon', 'Elijah', 'Jomar', 'Cesar', 'Carlo', 'Jose', 'Ben', 'Joshua', 'Russell', 'Ryan', 'Clifford', 'Neil', 'Jacob', 'Kyle', 'Nathan', 'Lloyd', 'Ian', 'Alvin', 'Joel', 'Daniel', 'Jason', 'Kurt', 'Mark', 'Clarence', 'Sean', 'Harvey', 'Gabriel', 'Dean', 'Jason', 'Rico', 'Carl', 'Harley', 'Francis', 'Steven', 'Allen', 'James', 'Russell', 'Steven', 'Rene', 'Dean', 'Christopher', 'Renz', 'Miguel', 'Cedrick', 'Lloyd', 'Edgar', 'Timothy', 'Erwin', 'Joshua', 'Adrian', 'Noah', 'Daniel', 'Clyde', 'Sean', 'Lawrence', 'Earl', 'Gerald', 'Emmanuel', 'Leandro', 'Rey', 'Zion', 'Joel', 'Jay', 'Justin', 'Jethro', 'Alfred', 'Rome', 'Edward', 'Leonard', 'Jerome', 'Richard', 'Clifford', 'Daryl', 'Gerald', 'Lance', 'Angelo', 'Ramon', 'Jeffrey', 'Cedric', 'Carlo', 'Tony', 'Jacob', 'Ramon', 'Jayden', 'Louis', 'Vincent', 'Dean', 'Ryan', 'Kian', 'Mathew', 'Neil', 'Ian', 'Albert', 'Bryan', 'Tony', 'Rowell', 'Ferdinand', 'Darren', 'Kyle', 'Samuel', 'Nelson', 'Albert', 'Rafael', 'Jonathan', 'Jared', 'Marvin', 'Rene', 'Daryl', 'Bryan', 'Philip', 'Carlo', 'Darren', 'Jayden', 'Francis', 'Clifford', 'Richard', 'Marvin', 'Matteo', 'Cedric', 'Harvey', 'Mark', 'Timothy', 'Darrel', 'Darrel', 'Ben', 'Ezekiel', 'Sean', 'Tristan', 'Harley', 'Edgar', 'Vincent', 'Earl', 'Jomar', 'Tony', 'Rafael', 'Jacob', 'Nathan', 'Alonzo', 'Rafael', 'Dominic', 'Harold', 'Paolo', 'James', 'Raymond', 'Richard', 'Harold', 'Cedric', 'Patrick', 'Ronald', 'Timothy', 'Christian', 'Earl', 'Brylle', 'Ezekiel', 'Richard', 'Lloyd', 'Patrick', 'Eugene', 'Cedric', 'Clarence', 'Robert', 'Ramon', 'Jayden', 'Joel', 'Rene', 'Zion', 'Roderick', 'Kurt', 'Roderick', 'Gerald', 'Aaron', 'Edward', 'Michael', 'Joseph', 'Sean', 'Marco', 'Emmanuel', 'Isaac', 'Jeremiah', 'Timothy', 'Jose', 'Kian', 'Simon', 'Ramon', 'Clyde', 'Nathan', 'Jomar', 'Renz', 'Gilbert', 'Rico', 'Paul', 'Alonzo', 'Zion', 'Arthur', 'Dennis', 'Tristan', 'Brylle', 'Clarence', 'Rene', 'Kenzo', 'Carlo', 'Tristan', 'Louis', 'Elric', 'Alexander', 'Aaron', 'Mathew', 'Jayden', 'Lucas', 'Darrel', 'Arthur', 'Aiden', 'Romeo', 'Alfred', 'Emmanuel', 'Jonathan', 'Ralph', 'Rafael', 'Paolo', 'Cesar', 'Alexander', 'Lance', 'Roderick', 'Edward', 'Francis', 'Arvin', 'Jonathan', 'Santino', 'Marvin', 'Alonzo', 'Ian', 'Kian', 'Roderick', 'Noah', 'Tristan', 'Jacob', 'Allan', 'Richard', 'Lloyd', 'Elric', 'Leandro', 'Richard', 'Joshua', 'Ryan', 'Dean', 'Roland', 'Santino', 'Cedric', 'Angelo', 'Rome', 'Rowell', 'Rafael', 'Kyle', 'Cedric', 'Darrel', 'Reymond', 'Ramon', 'Edward', 'Ferdinand', 'Harley', 'Vincent', 'Raymond', 'Sean', 'Vincent', 'Jethro', 'Angelo', 'Alonzo', 'Jared', 'Kian', 'Edward', 'Russell', 'Santino', 'Brylle', 'Renz', 'Patrick', 'Jeffrey', 'Jay', 'Aaron', 'Angelo', 'Jayson', 'Paolo', 'Xander', 'Anthony', 'Aaron', 'Jared', 'Zachary', 'Zachary', 'Carl', 'Jethro', 'Rene', 'Leandro', 'Marvin', 'Michael', 'Ezekiel', 'Xander', 'Rene', 'Leo', 'Christopher', 'Alexander', 'Emmanuel', 'Mathew', 'Xander', 'Gabriel', 'Juan', 'Enzo', 'Matteo', 'Thomas', 'Marco', 'Albert', 'Peter', 'Leandro', 'Clarence', 'Peter', 'Nathan', 'Ian', 'Jacob', 'Erwin', 'Ryan', 'Jeremiah', 'Timothy', 'Christopher', 'Harley', 'Harvey', 'Juan', 'Emmanuel', 'Alonzo', 'Russell', 'Lloyd', 'Dean', 'Ian', 'Kyle', 'Brylle', 'James', 'Santino', 'Allan', 'Jared', 'Aaron', 'Russell', 'Jayson', 'Daniel', 'Allen', 'Emmanuel', 'Mathew', 'Angelo', 'Kurt', 'Mark', 'Arthur', 'Enzo', 'Mark', 'Lucas', 'Peter', 'Louis', 'Ralph', 'Russell', 'Ezekiel', 'Lucas', 'Santino', 'Raymond', 'Jacob', 'Robert', 'Noah', 'Louie', 'Noel', 'Allen', 'Jonathan', 'Dominic', 'Harley', 'Noah', 'Rene', 'Rowell', 'Elric', 'Zion', 'Timothy', 'Dennis', 'Francis', 'Russell', 'Jonathan', 'Rene', 'Mark', 'Earl', 'Kenneth', 'Leo', 'Alvin', 'Victor', 'Eugene', 'Simon', 'Zachary', 'Ian', 'Kenzo', 'Matteo', 'Kenneth', 'Philip', 'Dominic', 'Cedric', 'Ryan', 'Richard', 'Gerald', 'Bryan', 'Clifford', 'Allen', 'Allen', 'Rico', 'Marco', 'James', 'Harley', 'Jared', 'Clarence', 'Ben', 'Lance', 'Jared', 'Kurt', 'Erwin', 'Xander', 'Mathew', 'Miguel', 'Carl', 'Kian', 'Justin', 'Darrel', 'Brylle', 'Angelo', 'Romeo', 'Edgar', 'Kurt', 'Emmanuel', 'Alvin', 'Gabriel', 'Jonathan', 'Daryl', 'Alexander', 'Carl', 'Eugene', 'Louie', 'Nelson', 'Michael', 'Clarence', 'Elric', 'Marco', 'Rowell', 'Vincent', 'Cedrick', 'Jason', 'Elijah', 'Paul', 'Christian', 'Miguel', 'Joel', 'Santino', 'Erwin', 'Kian', 'Dean', 'Harold', 'Oscar', 'Martin', 'Samuel', 'Noah', 'Gabriel', 'Darrel', 'Emmanuel', 'Ryan', 'Harvey', 'Sean', 'Ryan', 'Jomar', 'Carlo', 'Vincent', 'Clarence', 'Carl', 'Richard', 'Isaac', 'Elijah', 'Ronald', 'Louie', 'Kevin', 'Russell', 'Marco', 'Lawrence', 'Harold', 'Albert', 'Xander', 'Isaac', 'Clyde', 'Enzo', 'Anthony', 'Kyle', 'Lloyd', 'Oscar', 'Martin', 'Tony', 'Sean', 'Leonard', 'Ryan', 'Joshua', 'Peter', 'Ben', 'Lance', 'Darren', 'Rowell', 'Darrel', 'Edward', 'Anthony', 'Jason', 'Ian', 'Vincent', 'Romeo', 'Jerome', 'Matteo', 'Eugene', 'Dominic', 'Roland', 'Zachary', 'Martin', 'Clyde', 'Vincent', 'Juan', 'Rafael', 'Rafael', 'Marvin', 'Clarence', 'Richard', 'Philip', 'Jose', 'Raymond', 'Alexander', 'Albert', 'Jose', 'Kenzo', 'Jerome', 'Patrick', 'Zachary', 'Ryan', 'Arnold', 'Dennis', 'Justin', 'Mathew', 'Louis', 'Ferdinand', 'Lloyd', 'Daniel', 'Victor', 'John', 'Alfred', 'Jason', 'Justin', 'Louis', 'Robert', 'Alexander', 'Rowell', 'Lance', 'Leonard', 'Rey', 'Jomar', 'Peter', 'Elric', 'Juan', 'Simon', 'Jeremiah', 'Rene', 'Edward', 'Ben', 'Lance', 'Kenneth', 'Zane', 'Kenneth', 'Lucas', 'Peter', 'Albert', 'Darrel', 'Peter', 'Kian', 'Sean', 'Ferdinand', 'Kyle', 'Steven', 'Eugene', 'Lawrence', 'John', 'Kyle', 'Albert', 'Gilbert', 'Axel', 'Victor', 'Francis', 'Jeremiah', 'Ralph', 'James', 'Reymond', 'Raymond', 'Jethro', 'Carlo', 'Joseph', 'Leo', 'Ryan', 'Kevin', 'Dennis', 'Anthony', 'Alexander', 'Bryan', 'Miguel', 'Jayden', 'Louie', 'Timothy', 'Noel', 'Jason', 'Ben', 'Santino', 'Ferdinand', 'Jay', 'Bryan', 'Arthur', 'Jay', 'Miguel', 'Jeremiah', 'Christian', 'Philip', 'Victor', 'Philip', 'Nathan', 'Alfred', 'Nelson', 'Arnold', 'Dominic', 'Russell', 'Joseph', 'Timothy', 'Jonathan', 'Paolo', 'Alfred', 'Nelson', 'Jason', 'Christopher', 'Christian', 'Justin', 'Nathan', 'Albert', 'Leandro', 'Patrick', 'Jethro', 'Rowell', 'Elijah', 'Albert', 'Jerome', 'Darren', 'Kyle', 'Raymond', 'Clyde', 'Patrick', 'Ralph', 'Allen', 'Rico', 'Martin', 'Rey', 'Anthony', 'Arthur', 'Jason', 'Rene', 'Noel', 'Bryan', 'Carl', 'Ryan', 'Zion', 'Allen', 'Jonathan', 'Rey', 'Louie', 'Sean', 'Roderick', 'Jonathan', 'Jacob', 'Ferdinand', 'Ramon', 'Lucas', 'Tristan', 'Carl', 'Louie', 'Albert', 'Francis', 'Patrick', 'Cedric', 'Roland', 'Tony', 'Ben', 'Arvin', 'Jose', 'Arvin', 'Stephen', 'Lawrence', 'Arvin', 'Joseph', 'Xander', 'Paolo', 'Christian', 'Darren', 'Jose', 'Steven', 'Brylle', 'Anthony', 'Elijah', 'Dominic', 'Rafael', 'Eugene', 'Cedric', 'Gabriel', 'Patrick', 'Emmanuel', 'Nelson', 'Louie', 'Zachary', 'Zachary', 'Jonathan', 'Albert', 'Jeremiah', 'Steven', 'Ferdinand', 'Rowell', 'Kenzo', 'Leandro', 'Rene', 'Roderick', 'Edward', 'Jeffrey', 'Kevin', 'Dominic', 'Louie', 'Eugene', 'Marvin', 'Xander', 'Adrian', 'Ferdinand', 'Vincent', 'Allen', 'Roland', 'Erwin', 'Allen', 'Paolo', 'Arnold', 'Rome', 'Jayson', 'Zane', 'Lance', 'Carl', 'Ian', 'Ferdinand', 'Lawrence', 'Alexander', 'Tristan', 'Xander', 'Ferdinand', 'Isaac', 'Louis', 'Sean', 'Ralph', 'Patrick', 'Rico', 'Ben', 'Jomar', 'Rowell', 'Rowell', 'Earl', 'Alexander', 'Louie', 'Patrick', 'Brylle', 'Alexander', 'Zachary', 'Robert', 'Ezekiel', 'Ian', 'Lawrence', 'Allen', 'Brylle', 'Kyle', 'Jeffrey', 'Samuel', 'Leo', 'John', 'Louie', 'Samuel', 'Cedric', 'Clifford', 'Gerald', 'Jacob', 'Stephen', 'Patrick', 'Erwin', 'Richard', 'Kevin', 'Alvin', 'Rey', 'Francis', 'Santino', 'Zane', 'Lawrence', 'Harley', 'Santino', 'Rowell', 'Dominic', 'Christopher', 'Isaac', 'Samuel', 'Darrel', 'Jason', 'Zachary', 'Philip', 'Angelo', 'Leonard', 'Santino', 'Rafael', 'Cesar', 'Oscar', 'John', 'Jason', 'Kurt', 'Aiden', 'Eugene', 'Allen', 'Dennis', 'Samuel', 'Leo', 'Jeremiah', 'Francis', 'Rene', 'Victor', 'Eugene', 'Adrian', 'Martin', 'Nathan', 'Zachary', 'Xander', 'Angelo', 'Kevin', 'Daryl', 'Jason', 'Christopher', 'Joel', 'Zachary', 'Louis', 'Kenzo', 'Leonard', 'Aiden', 'Noah', 'John', 'Bryan', 'Jay', 'Paul', 'Emmanuel', 'Lance', 'Anthony', 'Noah', 'Ryan', 'Kurt', 'Daniel', 'Rowell', 'Clifford', 'Arthur', 'Marvin', 'Marco', 'Erwin', 'Arnold', 'Bryan', 'Kenneth', 'Dominic', 'Darrel', 'Carl', 'Louie', 'Neil', 'Lucas', 'Emmanuel', 'Jeffrey', 'Erwin', 'Noel', 'Zion', 'Dennis', 'Richard', 'Xander', 'Mark', 'Mark', 'Renz', 'Ezekiel', 'Enzo', 'Eugene', 'Harold', 'Russell', 'Thomas', 'Harvey', 'Adrian', 'Anthony', 'Robert', 'Arthur', 'Alfred', 'Alvin', 'Christopher', 'Bryan', 'Jared', 'Ian', 'Angelo', 'Francis', 'Robert', 'Jomar', 'Angelo', 'Anthony', 'Kevin', 'Jomar', 'Dean', 'Albert', 'Christopher', 'Lance', 'Tristan', 'Zane', 'Steven', 'Juan', 'Richard', 'Philip', 'Zion', 'Kyle', 'Alexander', 'Romeo', 'Bryan', 'Jared', 'Justin', 'Zane', 'Reymond', 'Alfred', 'Cedrick', 'Paul', 'Cedrick', 'Kian', 'Alexander', 'Anthony', 'Clyde', 'Adrian', 'Lucas', 'Marvin', 'Xander', 'Albert', 'Louie', 'Elijah', 'Michael', 'Steven', 'Cesar', 'Patrick', 'Renz', 'Clifford', 'Darrel', 'Philip', 'Ryan', 'Jeremiah', 'Renz', 'Lance', 'Kenzo', 'Ryan', 'Alfred', 'Harley', 'Clyde', 'Paul', 'Christian', 'Lance', 'Paolo', 'Darren', 'John', 'Zane', 'Jayson', 'Enzo', 'Edgar', 'Thomas', 'Russell', 'Alexander', 'Jason', 'Joshua', 'Matteo', 'Daryl', 'Cesar', 'Reymond', 'Jethro', 'Matteo', 'Tristan', 'Brylle', 'Isaac', 'Reymond', 'Allen', 'Tristan', 'Vincent', 'Victor', 'Justin', 'Patrick', 'Angelo', 'Mathew', 'Ronald', 'Ryan', 'Gerald', 'Ryan', 'Zachary', 'Kian', 'Harold', 'Stephen', 'Oscar', 'Jayson', 'Oscar', 'Earl', 'Gerald', 'Angelo', 'Juan', 'Erwin', 'Renz', 'Jose', 'Adrian', 'Louie', 'Robert', 'Zane', 'Joseph', 'Noah', 'Earl', 'Jethro', 'Martin', 'Dean', 'Allan', 'Rey', 'Cedric', 'Jomar', 'Darren', 'Christopher', 'Samuel', 'Edgar', 'Ryan', 'Richard', 'Noah', 'Marco', 'Darrel', 'Rafael', 'Ronald', 'Albert', 'Cesar', 'Lance', 'Carlo', 'Angelo', 'Reymond', 'Steven', 'Ryan', 'Marvin', 'Robert', 'Christopher', 'Cesar', 'Timothy', 'Jayden', 'Ryan', 'Ryan', 'Brylle', 'Aaron', 'Zane', 'Roland', 'Leonard', 'Earl', 'Ronald', 'Leo', 'Clyde', 'Rico', 'Peter', 'Carl', 'Daryl', 'Juan', 'Robert', 'Darrel', 'Tristan', 'Arnold', 'Lucas', 'Leandro', 'Harold', 'Marco', 'Noel', 'Tristan', 'Marvin', 'Lloyd', 'Ronald', 'Paul', 'Roland', 'Harold', 'Paolo', 'Isaac', 'Alfred', 'Russell', 'John', 'Angelo', 'Harvey', 'Tristan', 'Ronald', 'Patrick', 'Angelo', 'Cesar', 'Dean', 'Kyle', 'Elric', 'Bryan', 'Kyle', 'Miguel', 'Matteo', 'Patrick', 'Clyde', 'Timothy', 'Albert', 'John', 'Jomar', 'Marvin', 'Jay', 'Gerald', 'Ezekiel', 'Rico', 'Cesar', 'Paolo', 'Sean', 'Marco', 'Rome', 'Angelo', 'Stephen', 'Mark', 'Edward', 'Axel', 'Peter', 'Rey', 'Nelson', 'Darrel', 'Erwin', 'Zachary', 'Erwin', 'Alonzo', 'Thomas', 'Allen', 'Thomas', 'Rene', 'Ramon', 'James', 'Leonard', 'Reymond', 'Steven', 'Jay', 'Jonathan', 'Clifford', 'Carlo', 'Paul', 'Clyde', 'Aiden', 'Ryan', 'Oscar', 'Ferdinand', 'Cesar', 'Richard', 'Alonzo', 'Zion', 'Rene', 'Dean', 'Kenneth', 'Steven', 'Leonard', 'Kenzo', 'Darren', 'Isaac', 'Bryan', 'Robert', 'Leo', 'Cesar', 'Richard', 'Tristan', 'Simon', 'Albert', 'Arnold', 'Joseph', 'Kenzo', 'Leonard', 'Dean', 'Paolo', 'Neil', 'Jayson', 'Alvin', 'Sean', 'Aiden', 'Ben', 'Dean', 'Gilbert', 'Eugene', 'Aiden', 'Roderick', 'Kyle', 'Brylle', 'Louie', 'Roland', 'Stephen', 'Victor', 'Sean', 'Rome', 'Jose', 'Santino', 'Xander', 'Elric', 'Cedrick', 'Jeremiah', 'Elric', 'Samuel', 'Raymond', 'Zane', 'Marco', 'Rafael', 'Elijah', 'Cedrick', 'Philip', 'Jayson', 'Allen', 'Alfred', 'Bryan', 'Brylle', 'Ryan', 'Rico', 'Francis', 'Leandro', 'Ryan', 'Rico', 'Kenzo', 'Stephen', 'Leandro', 'Jose', 'Matteo', 'Raymond', 'Rico', 'Reymond', 'Jose', 'Cesar', 'Kurt', 'Axel', 'Darrel', 'Lance', 'Gabriel', 'Ramon', 'Peter', 'Ryan', 'Harvey', 'Elijah', 'Mark', 'Louis', 'Leonard', 'Tristan', 'Carlo', 'Ezekiel', 'Rome', 'Anthony', 'Joshua', 'Harley', 'Martin', 'Reymond', 'Jason', 'Rene', 'Renz', 'Alexander', 'Edward', 'Tony', 'Adrian', 'Harold', 'Patrick', 'Eugene', 'Cesar', 'Darren', 'Kenzo', 'Joseph', 'Rey', 'Rowell', 'Reymond', 'Erwin', 'Renz', 'Christopher', 'Oscar', 'Jethro', 'Ezekiel', 'Joshua', 'Adrian', 'Neil', 'Aiden', 'Marvin', 'Roderick', 'Clyde', 'Zachary', 'Jacob', 'Kian', 'Samuel', 'Allen', 'Xander', 'Noel', 'Robert', 'Jose', 'Samuel', 'Jeffrey', 'Lloyd', 'Dennis', 'Patrick', 'Matteo', 'Ryan', 'Mathew', 'Robert', 'Lloyd', 'Adrian', 'Ryan', 'Francis', 'Jason', 'Carlo', 'Leo', 'Aiden', 'Patrick', 'Rafael', 'Santino', 'Gilbert', 'Romeo', 'John', 'Kyle', 'Daryl', 'Gerald', 'Justin', 'Alfred', 'Alfred', 'Bryan', 'Jomar', 'Gilbert', 'Kyle', 'Harold', 'Cedric', 'Allan', 'Christian', 'Ryan', 'Emmanuel', 'Joel', 'Clarence', 'Patrick', 'Rome', 'Darren', 'Alexander', 'Aaron', 'Martin', 'Ian', 'Eugene', 'Jacob', 'Justin', 'Harley', 'Ronald', 'Angelo', 'Arnold', 'Eugene', 'Louie', 'Jay', 'Noel', 'Victor', 'Santino', 'Arthur', 'Kenzo', 'Dennis', 'Christian', 'Tony', 'Carlo', 'Gerald', 'Ronald', 'Rowell', 'Christopher', 'Darren', 'Rene', 'Jonathan', 'Tony', 'Zachary', 'Rome', 'Michael', 'Cedric', 'Patrick', 'Jerome', 'Jethro', 'Reymond', 'Samuel', 'Joel', 'Michael', 'Tristan', 'Jonathan', 'Leo', 'Kian', 'Earl', 'Victor', 'Louie', 'Gerald', 'Ryan', 'Vincent', 'Zion', 'Marco', 'Zion', 'Patrick', 'Edgar', 'Ezekiel', 'Ralph', 'Brylle', 'Cedrick', 'Jacob', 'Cedric', 'Kian', 'Elijah', 'Allen', 'Rafael', 'Oscar', 'Ian', 'Kenzo', 'Jethro', 'Martin', 'Jerome', 'Carlo', 'Xander', 'Elric', 'Ian', 'Edgar', 'Juan', 'Neil', 'Rowell', 'Carlo', 'Kevin', 'Clarence', 'Brylle', 'Albert', 'Louis', 'Christopher', 'Axel', 'Alexander', 'Nathan', 'Allan', 'Aiden', 'Martin', 'Philip', 'Ferdinand', 'Alonzo', 'Lucas', 'Noel', 'Edgar', 'Brylle', 'Jayson', 'Timothy', 'Sean', 'Justin', 'Nathan', 'Jared', 'Angelo', 'Kurt', 'Lance', 'Michael', 'Brylle', 'Jay', 'Joseph', 'Ferdinand', 'Patrick', 'Lloyd', 'Zachary', 'Harley', 'Alfred', 'Ryan', 'Joseph', 'Zion', 'Jonathan', 'Ben', 'Aiden', 'Michael', 'Joseph', 'Renz', 'Ryan', 'Kyle', 'Brylle', 'Gilbert', 'Patrick', 'Ben', 'Tristan', 'Rafael', 'Noah', 'Santino', 'Rico', 'Ferdinand', 'John', 'Tony', 'Zane', 'Dean', 'Gabriel', 'Jerome', 'Kenneth', 'Harold', 'Carl', 'Carlo', 'Elijah', 'Noah', 'Emmanuel', 'Erwin', 'James', 'Timothy', 'Lucas', 'Edgar', 'Rafael', 'Lucas', 'Ben', 'Jerome', 'Louis', 'Alfred', 'Zane', 'Santino', 'Neil', 'Marvin', 'Xander', 'Ferdinand', 'Michael', 'Aaron', 'Lance', 'Neil', 'Renz', 'Timothy', 'Michael', 'Elric', 'Thomas', 'Nathan', 'Clifford', 'Brylle', 'Matteo', 'Rome', 'Jomar', 'James', 'Dean', 'Elijah', 'John', 'Michael', 'Tony', 'Neil', 'Eugene', 'Ezekiel', 'Axel', 'Eugene', 'Jeffrey', 'Erwin', 'Ferdinand', 'Sean', 'Carl', 'Reymond', 'Samuel', 'Alfred', 'Samuel', 'Dennis', 'Neil', 'Ryan', 'Harold', 'Mark', 'Alexander', 'Lloyd', 'Jayson', 'Cesar', 'Stephen', 'Carl', 'Clyde', 'Aaron', 'Ian', 'Lawrence', 'Zane', 'Emmanuel', 'Leonard', 'Ben', 'Clyde', 'Jonathan', 'Xander', 'Cedrick', 'Jomar', 'Allan', 'Rafael', 'Lance', 'Jose', 'Daniel', 'Raymond', 'Russell', 'Anthony', 'Michael', 'Daryl', 'Steven', 'Kenneth', 'Noel', 'Marco', 'Mathew', 'Alvin', 'Jared', 'Ryan', 'Carlo', 'Ferdinand', 'Jared', 'Tony', 'Ronald', 'Carlo', 'Earl', 'Robert', 'Martin', 'Clarence', 'Zion', 'Tony', 'Lucas', 'Alonzo', 'Raymond', 'Justin', 'Dean', 'Ezekiel', 'Oscar', 'Matteo', 'Alonzo', 'Ferdinand', 'Arvin', 'Ezekiel', 'Rico', 'Leo', 'Leonard', 'Ben', 'Reymond', 'Renz', 'Jose', 'Nelson', 'Carl', 'Rafael', 'Richard', 'Arnold', 'Carl', 'Dominic', 'Victor', 'Harley', 'Lawrence', 'Zion', 'Ben', 'Jerome', 'Noah', 'Alvin', 'Ferdinand', 'Bryan', 'Enzo', 'Nelson', 'Marco', 'Dean', 'Marco', 'Jose', 'Ian', 'Earl', 'Jethro', 'Angelo', 'Harley', 'Harold', 'Jayden', 'Harold', 'Lawrence', 'Alonzo', 'Oscar', 'Kenneth', 'Roland', 'Rey', 'Sean', 'Gilbert', 'Renz', 'Oscar', 'Michael', 'Marvin', 'Louie', 'Matteo', 'Kurt', 'Lucas', 'Aiden', 'Jacob', 'Harvey', 'Edgar', 'Richard', 'Zion', 'Noel', 'Lance', 'Simon', 'Zane', 'Cedric', 'Dominic', 'Christian', 'Angelo', 'Leo', 'James', 'Peter', 'Paolo', 'Russell', 'Eugene', 'Carl', 'Zane', 'Roland', 'Sean', 'Jayden', 'Roland', 'Noel', 'Santino', 'Ralph', 'Kyle', 'Michael', 'Russell', 'Edgar', 'Matteo', 'Aiden', 'Raymond', 'Noel', 'Carl', 'Harley', 'Jeremiah', 'Carlo', 'Zachary', 'Jethro', 'Philip', 'Paul', 'Roland', 'James', 'Angelo', 'Rome', 'Ferdinand', 'Kenneth', 'Ryan', 'Kurt', 'Alonzo', 'Mathew', 'Clarence', 'Kian', 'Cedrick', 'Oscar', 'Rene', 'Cesar', 'Zachary', 'Jerome', 'Victor', 'Carl', 'Jayson', 'Michael', 'Jeremiah', 'Jay', 'Harley', 'Kurt', 'Mathew', 'Juan', 'Harley', 'Samuel', 'Earl', 'Harold', 'Justin', 'Roderick', 'Daniel', 'Arthur', 'Ryan', 'Dennis', 'Justin', 'Russell', 'Earl', 'Darrel', 'Adrian', 'Mathew', 'Matteo', 'Francis', 'Victor', 'Rene', 'Thomas', 'Louis', 'Marvin', 'Christopher', 'Vincent', 'Jayden', 'Jeremiah', 'Juan', 'Darrel', 'Alvin', 'Ronald', 'Darren', 'Alexander', 'Edgar', 'Harold', 'Kurt', 'Brylle', 'Leonard', 'Justin', 'Elric', 'Kevin', 'Ralph', 'Paolo', 'Victor', 'Matteo', 'James', 'Zane', 'Brylle', 'Samuel', 'Ian', 'Alvin', 'Rene', 'Francis', 'Rome', 'Philip', 'James', 'Justin', 'Edward', 'Jethro', 'Jeffrey', 'James', 'Lawrence', 'Darrel', 'Neil', 'Erwin', 'Thomas', 'Xander', 'Leonard', 'Romeo', 'Oscar', 'Simon', 'Elijah', 'Matteo', 'Kian', 'Earl', 'Reymond', 'Dominic', 'Edgar', 'Alonzo', 'Romeo', 'Rome', 'Ferdinand', 'Darrel', 'Roderick', 'Patrick', 'Jeffrey', 'Ryan', 'Victor', 'Patrick', 'Paul', 'Jethro', 'Simon', 'Harley', 'Ezekiel', 'Jonathan', 'Miguel', 'Matteo', 'Rowell', 'Zachary', 'Xander', 'Joel', 'Jared', 'Simon', 'Gabriel', 'Clarence', 'Joseph', 'Kurt', 'Carlo', 'Kian', 'Noel', 'Jacob', 'Kevin', 'Edgar', 'Anthony', 'Justin', 'Albert', 'Richard', 'Christian', 'Victor', 'Brylle', 'Cedric', 'Edward', 'Joshua', 'Ian', 'Mark', 'Santino', 'Harvey', 'Raymond', 'Jay', 'Romeo', 'Emmanuel', 'Dominic', 'Sean', 'Patrick', 'Adrian', 'Ronald', 'Brylle', 'Simon', 'Edward', 'Victor', 'Cedrick', 'Harley', 'Jayden', 'Rowell', 'Adrian', 'Aiden', 'Daryl', 'Aaron', 'Martin', 'Adrian', 'Lance', 'Jayson', 'Anthony', 'Darren', 'Noel', 'Romeo', 'Enzo', 'Ian', 'Jeffrey', 'Jay', 'Lucas', 'Elijah', 'Arthur', 'Darrel', 'Ramon', 'Harold', 'Kenzo', 'Arvin', 'Ian', 'Jerome', 'Robert', 'Jerome', 'Martin', 'Jeffrey', 'Arthur', 'Roland', 'Patrick', 'Joshua', 'Stephen', 'Justin', 'Lucas', 'Jacob', 'Santino', 'Raymond', 'Clyde', 'Martin', 'Joshua', 'Lucas', 'Jay', 'Simon', 'Jacob', 'Zane', 'Joel', 'Louis', 'Simon', 'Paolo', 'Aiden', 'Rey', 'Richard', 'Jeremiah', 'Nelson', 'Juan', 'Alonzo', 'Gerald', 'Noah', 'Albert', 'Darren', 'Edward', 'Ronald', 'Jared', 'Arnold', 'Paul', 'Axel', 'Christopher', 'Axel', 'Erwin', 'Roderick', 'Santino', 'Cedric', 'Clyde', 'Noah', 'Rene', 'Neil', 'Cedrick', 'Zion', 'Richard', 'Alfred', 'Clarence', 'Joel', 'Nathan', 'Gerald', 'Leandro', 'Dean', 'Alfred', 'Francis', 'Zachary', 'Renz', 'Romeo', 'Eugene', 'Marco', 'Kevin', 'Jeffrey', 'Thomas', 'Clyde', 'Jeffrey', 'Ezekiel', 'Justin', 'Neil', 'Gabriel', 'Alfred', 'Rene', 'Harold', 'Ferdinand', 'Rafael', 'Justin', 'Timothy', 'Francis', 'Brylle', 'Adrian', 'Alvin', 'Sean', 'Lucas', 'Jacob', 'Jerome', 'Jonathan', 'Christian', 'Jason', 'Justin', 'Arnold', 'Lloyd', 'Jonathan', 'Rome', 'Alfred', 'Samuel', 'Paolo', 'Jared', 'Alvin', 'Jerome', 'Jay', 'Thomas', 'Earl', 'Christian', 'Tony', 'Kurt', 'Jayden', 'Sean', 'Mark', 'Sean', 'Arnold', 'Edgar', 'Jason', 'Alonzo', 'Peter', 'Daniel', 'Clifford', 'Leonard', 'Joseph', 'Alexander', 'Ezekiel', 'Leo', 'Aiden', 'Xander', 'Marco', 'Paolo', 'Rey', 'Zane', 'Kian', 'Aiden', 'Ryan', 'Daryl', 'Kurt', 'Jason', 'Ryan', 'Oscar', 'Daryl', 'Jethro', 'Nelson', 'Aiden', 'Allan', 'Jay', 'Harold', 'Rome', 'Martin', 'Jeremiah', 'Leandro', 'Russell', 'Earl', 'Anthony', 'Christopher', 'Zion', 'Kenneth', 'Noah', 'Raymond', 'Timothy', 'Alfred', 'Santino', 'Oscar', 'Lance', 'Albert', 'Leo', 'Earl', 'Joshua', 'Kenneth', 'Gilbert', 'Roland', 'Xander', 'Ben', 'Tony', 'Lawrence', 'Nelson', 'Jacob', 'Arvin', 'Erwin', 'Alfred', 'Carl', 'Brylle', 'Samuel', 'Dean', 'Kenneth', 'Mathew', 'Paul', 'Darrel', 'Alexander', 'Allan', 'Daniel', 'Gerald', 'Dean', 'Dennis', 'Rome', 'Daryl', 'Dean', 'Christopher', 'Louis', 'Ezekiel', 'Leandro', 'Jacob', 'Dennis', 'Earl', 'Ben', 'Harley', 'Carl', 'Clifford', 'Ryan', 'Ralph', 'Clifford', 'Albert', 'Nathan', 'Eugene', 'Simon', 'Gabriel', 'Ryan', 'Jay', 'Harley', 'Clifford', 'Alfred', 'Kurt', 'Rowell', 'Enzo', 'Timothy', 'Earl', 'Joseph', 'Allan', 'Jason', 'Jason', 'Matteo', 'Richard', 'Jay', 'Lawrence', 'Cesar', 'Steven', 'Anthony', 'Jeffrey', 'Neil', 'Sean', 'Marvin', 'Christian', 'Renz', 'Bryan', 'Oscar', 'Zion', 'Ryan', 'Ferdinand', 'Paolo', 'Anthony', 'Oscar', 'Matteo', 'Bryan', 'Elijah', 'Joel', 'Matteo', 'Ralph', 'Jacob', 'Gilbert', 'James', 'Daryl', 'Neil', 'Noah', 'Adrian', 'Emmanuel', 'Romeo', 'Rafael', 'Jay', 'James', 'Bryan', 'Louis', 'Jason', 'Emmanuel', 'Ryan', 'Tristan', 'Leo', 'Leandro', 'Philip', 'Gabriel', 'Jose', 'Juan', 'Matteo', 'Carl', 'Zachary', 'Jomar', 'Kevin', 'Ralph', 'Xander', 'Lance', 'Gerald', 'Leo', 'Jose', 'Timothy', 'Kian', 'Isaac', 'Kenzo', 'Erwin', 'Emmanuel', 'Mark', 'Thomas', 'Bryan', 'Samuel', 'Harley', 'Sean', 'Stephen', 'Eugene', 'Zachary', 'Alfred', 'Clifford', 'Leandro', 'Rey', 'Bryan', 'Aiden', 'Patrick', 'Daryl', 'Richard', 'Clyde', 'Isaac', 'Elric', 'Jayden', 'Darrel', 'Anthony', 'Ryan', 'Jeffrey', 'Carl', 'Ryan', 'Cesar', 'Mathew', 'Santino', 'Jayson', 'Timothy', 'Miguel', 'Rafael', 'Christian', 'Jacob', 'Tony', 'Marco', 'Joseph', 'Lloyd', 'Rey', 'Mark', 'Rey', 'Philip', 'Aaron', 'Jacob', 'Gilbert', 'Lawrence', 'Reymond', 'Ryan', 'Russell', 'Matteo', 'Dennis', 'Jeffrey', 'Carlo', 'Lawrence', 'Emmanuel', 'Elijah', 'Ezekiel', 'Lance', 'Rico', 'Carlo', 'Kian', 'Rene', 'Lucas', 'Brylle', 'Jacob', 'Enzo', 'Christian', 'Ben', 'Brylle', 'Erwin', 'Gabriel', 'Clifford', 'Angelo', 'Daryl', 'Zion', 'Robert', 'Kyle', 'Peter', 'Ferdinand', 'Arthur', 'Aaron', 'Joel', 'Harley', 'Clarence', 'Angelo', 'Elijah', 'Sean', 'Roland', 'Christian', 'Sean', 'Earl', 'John', 'Jerome', 'Eugene', 'Kyle', 'Allan', 'Lance', 'Rey', 'Elijah', 'Jeffrey', 'Simon', 'Kurt', 'Romeo', 'Erwin', 'Jerome', 'Lawrence', 'Russell', 'Rowell', 'Rowell', 'Christopher', 'Simon', 'Neil', 'Emmanuel', 'Simon', 'Stephen', 'Francis', 'Patrick', 'James', 'John', 'John', 'Rico', 'Paolo', 'Joel', 'Steven', 'Rafael', 'Lloyd', 'Rey', 'Xander', 'Jethro', 'Ronald', 'Peter', 'Clarence', 'Jeremiah', 'Rico', 'Brylle', 'Marvin', 'Renz', 'Alonzo', 'Gerald', 'Arnold', 'Daniel', 'Enzo', 'Victor', 'Leonard', 'Vincent', 'Cesar', 'Simon', 'Edward', 'Peter', 'Lucas', 'Jared', 'John', 'Sean', 'Rene', 'Paul', 'Sean', 'Eugene', 'Darren', 'Jayson', 'Victor', 'Timothy', 'Samuel', 'Ian', 'Mark', 'Christian', 'Ralph', 'Anthony', 'Stephen', 'Erwin', 'Kenzo', 'Jason', 'Mark', 'Earl', 'Paul', 'Rafael', 'Angelo', 'Kyle', 'Alexander', 'Richard', 'Jose', 'Brylle', 'Xander', 'Neil', 'Cesar', 'Rene', 'Emmanuel', 'Xander', 'Aiden', 'Robert', 'Eugene', 'Ian', 'Justin', 'Jose', 'Jerome', 'Kevin', 'Ramon', 'Marco', 'Zion', 'Gerald', 'Ralph', 'Stephen', 'Paolo', 'Jared', 'Ryan', 'Joshua', 'Anthony', 'Isaac', 'Leandro', 'Reymond', 'Bryan', 'Peter', 'Ryan', 'Santino', 'Jacob', 'Romeo', 'Kenzo', 'Kenzo', 'Martin', 'Victor', 'Reymond', 'Jacob', 'Jose', 'Timothy', 'Carl', 'Noel', 'Paolo', 'Jomar', 'Philip', 'Ben', 'Santino', 'Noel', 'Robert', 'Harold', 'Rene', 'Zion', 'Clyde', 'Eugene', 'Miguel', 'Marvin', 'Lawrence', 'Edward', 'Richard', 'Earl', 'Cesar', 'Jeremiah', 'Carlo', 'Zachary', 'Nelson', 'Aaron', 'Ezekiel', 'Justin', 'Cesar', 'Clifford', 'Louis', 'Matteo', 'Arvin', 'Robert', 'Reymond', 'Kenzo', 'Kenzo', 'Albert', 'Aiden', 'Richard', 'Leo', 'Peter', 'Rey', 'Ramon', 'Arnold', 'Ian', 'Clarence', 'Marvin', 'Axel', 'Kyle', 'Peter', 'Aiden', 'Zane', 'Gilbert', 'Dennis', 'Aiden', 'Clarence', 'Angelo', 'Ferdinand', 'Christopher', 'Albert', 'Xander', 'Arthur', 'Jerome', 'Noel', 'Nelson', 'Jayson', 'Emmanuel', 'Ferdinand', 'Ferdinand', 'Edgar', 'Steven', 'Jared', 'Jayson', 'Ryan', 'Roland', 'Axel', 'Lance', 'Zane', 'John', 'Gilbert', 'Clarence', 'Jerome', 'Aaron', 'Lance', 'Nathan', 'Clarence', 'Jose', 'Gilbert', 'Raymond', 'Louie', 'Ryan', 'Michael', 'Zachary', 'Arvin', 'Stephen', 'Robert', 'Tristan', 'Jason', 'Joel', 'Jared', 'Brylle', 'Nelson', 'Rome', 'Rafael', 'Jonathan', 'Eugene', 'Daryl', 'Michael', 'Leo', 'Kian', 'Sean', 'Kian', 'Rico', 'Kurt', 'Martin', 'Christopher', 'Ryan', 'Daryl', 'James', 'Tony', 'Lawrence', 'Roderick', 'Louis', 'Rene', 'Rene', 'Rico', 'Paolo', 'Ferdinand', 'Allen', 'Kian', 'Earl', 'Daryl', 'Emmanuel', 'Francis', 'Patrick', 'Nelson', 'Paolo', 'Jay', 'Alexander', 'Philip', 'Zachary', 'Zachary', 'Edgar', 'Jason', 'Leonard', 'Reymond', 'Dominic', 'Thomas', 'Dennis', 'Brylle', 'Carlo', 'Edward', 'Joel', 'Lawrence', 'Kurt', 'Enzo', 'Clifford', 'John', 'Reymond', 'Noel', 'Rey', 'Zane', 'Victor', 'Daniel', 'Ben', 'Axel', 'Romeo', 'Philip', 'Edgar', 'Daniel', 'Daniel', 'Darren', 'Zachary', 'Nelson', 'Patrick', 'Simon', 'Christopher', 'Kevin', 'Kian', 'Darren', 'Stephen', 'Ralph', 'Kian', 'Martin', 'Jared', 'Rey', 'Lance', 'Joshua', 'Xander', 'Leonard', 'Samuel', 'Neil', 'Joseph', 'Dennis', 'Simon', 'Harley', 'Angelo', 'Arthur', 'Harvey', 'Louis', 'Carlo', 'Carlo', 'Cesar', 'Nathan', 'Stephen', 'Richard', 'Adrian', 'Edgar', 'Mathew', 'Zane', 'Christian', 'Jonathan', 'Paolo', 'Joel', 'Nelson', 'Daryl', 'Ferdinand', 'Rico', 'Ian', 'Enzo', 'Darrel', 'Kyle', 'Clarence', 'Renz', 'Francis', 'Louie', 'Martin', 'Jethro', 'Robert', 'Bryan', 'Santino', 'Darren', 'Paul', 'Santino', 'Miguel', 'Carlo', 'Rene', 'Jeffrey', 'Harvey', 'Ronald', 'Rowell', 'Louis', 'Joel', 'Lloyd', 'Cedrick', 'Cedric', 'Elijah', 'Justin', 'Clifford', 'Steven', 'Zachary', 'Allan', 'Eugene', 'Rome', 'Jeremiah', 'Jayden', 'Roderick', 'Matteo', 'Allan', 'Roland', 'James', 'Jomar', 'Daryl', 'Darrel', 'Stephen', 'Rico', 'Reymond', 'Earl', 'Dean', 'Jomar', 'Aiden', 'Neil', 'Rafael', 'Noel', 'Daniel', 'Peter', 'Carlo', 'Martin', 'Patrick', 'Enzo', 'Neil', 'Jonathan', 'Alfred', 'Thomas', 'Jose', 'Nelson', 'Earl', 'Joel', 'Kyle', 'Paolo', 'Alvin', 'Ralph', 'Rafael', 'Gilbert', 'Ryan', 'Mark', 'Clyde', 'Rafael', 'Carl', 'Renz', 'Christopher', 'Cedrick', 'Rafael', 'Xander', 'Ronald', 'Matteo', 'Nelson', 'Erwin', 'Lawrence', 'Gabriel', 'Paul', 'Nelson', 'Mark', 'Thomas', 'Louie', 'Patrick', 'Jacob', 'Paul', 'Cedric', 'Ben', 'Harley', 'Brylle', 'Sean', 'Harley', 'Bryan', 'Lucas', 'Rowell', 'Jayden', 'Jeremiah', 'Harold', 'Jayden', 'Jayson', 'Edgar', 'Dominic', 'James', 'Erwin', 'Lloyd', 'Jomar', 'Allen', 'Allen', 'Jeffrey', 'Harold', 'Kenneth', 'Rey', 'Emmanuel', 'Jethro', 'Leandro', 'Sean', 'Arnold', 'Xander', 'Ryan', 'Anthony', 'Cedric', 'Juan', 'Paul', 'Dean', 'Nathan', 'Matteo', 'Carl', 'Isaac', 'Alvin', 'Rey', 'Adrian', 'Renz', 'Enzo', 'Erwin', 'Leonard', 'Michael', 'Justin', 'Jonathan', 'Ryan', 'Tony', 'Simon', 'Victor', 'Ben', 'Santino', 'Cedrick', 'Alonzo', 'Rafael', 'Patrick', 'Jason', 'Roland', 'Rome', 'Lawrence', 'Edgar', 'Paolo', 'Joshua', 'Louis', 'Jason', 'Brylle', 'Richard', 'Tristan', 'Jayden', 'Arvin', 'Matteo', 'Zane', 'Kenzo', 'Eugene', 'Gabriel', 'Kyle', 'Thomas', 'Matteo', 'Cesar', 'Aiden', 'Enzo', 'Martin', 'Richard', 'Harvey', 'Elric', 'Harley', 'Tristan', 'Anthony', 'Isaac', 'Gerald', 'Jayden', 'Rafael', 'Justin', 'Isaac', 'Enzo', 'Axel', 'Ramon', 'Peter', 'Cedrick', 'Rene', 'Mathew', 'Jethro', 'Michael', 'Erwin', 'Zane', 'Alexander', 'Daryl', 'Gilbert', 'Rome', 'Reymond', 'Clarence', 'Jayson', 'Clyde', 'Ben', 'Leandro', 'Louis', 'Aiden', 'Paul', 'Kian', 'Enzo', 'Allen', 'Ryan', 'Arthur', 'Axel', 'Robert', 'Brylle', 'Rene', 'Tony', 'Zane', 'Nathan', 'Earl', 'Kevin', 'Rafael', 'Stephen', 'Joshua', 'Francis', 'Richard', 'Patrick', 'Axel', 'Rowell', 'Roderick', 'Zane', 'Kurt', 'Erwin', 'Jay', 'Mark', 'Alfred', 'Jayson', 'Kevin', 'Zion', 'Bryan', 'Jeremiah', 'Jacob', 'Simon', 'Edgar', 'Albert', 'Anthony', 'Cedric', 'Santino', 'Ben', 'Gilbert', 'Jacob', 'Ronald', 'Patrick', 'Allan', 'Arvin', 'Ferdinand', 'Paolo', 'Brylle', 'Leandro', 'Eugene', 'Ryan', 'Neil', 'Lucas', 'Lawrence', 'Albert', 'Vincent', 'Stephen', 'Jeffrey', 'Jacob', 'Kenzo', 'Jayden', 'Lloyd', 'Peter', 'Kenneth', 'Jerome', 'Jethro', 'Noel', 'Ezekiel', 'Angelo', 'Rome', 'Daniel', 'Allen', 'Darren', 'Carl', 'Cedric', 'Adrian', 'Leonard', 'Kevin', 'Ferdinand', 'Lloyd', 'Cedric', 'Patrick', 'Ian', 'Kenzo', 'Tristan', 'Robert', 'Romeo', 'Joel', 'Simon', 'Oscar', 'Albert', 'Alonzo', 'Neil', 'Daniel', 'Ian', 'Allen', 'Isaac', 'Francis', 'Lance', 'Carlo', 'Joel', 'Christian', 'Rowell', 'Kenzo', 'Kevin', 'Ian', 'Jethro', 'Christian', 'Steven', 'Kenzo', 'Lawrence', 'Gerald', 'Harold', 'Darren', 'Jayden', 'Oscar', 'Ramon', 'Lucas', 'Kurt', 'James', 'Kenneth', 'Kurt', 'Alfred', 'Earl', 'Francis', 'Ramon', 'Erwin', 'Elijah', 'Kenzo', 'Richard', 'Emmanuel', 'Dennis', 'Eugene', 'Anthony', 'Emmanuel', 'Ryan', 'Jeffrey', 'Ferdinand', 'Adrian', 'Arthur', 'Jayson', 'Romeo', 'Jonathan', 'Oscar', 'Clifford', 'Philip', 'Vincent', 'Elijah', 'Jared', 'Francis', 'Brylle', 'Sean', 'Santino', 'Darrel', 'Cesar', 'Christian', 'Richard', 'Anthony', 'Nathan', 'Arvin', 'Jared', 'Reymond', 'Clarence', 'Ramon', 'Renz', 'Joseph', 'Dean', 'John', 'Edward', 'Ryan', 'Daryl', 'Miguel', 'Ben', 'Aaron', 'Lloyd', 'Thomas', 'James', 'Allen', 'Jeffrey', 'Enzo', 'Isaac', 'Earl', 'Matteo', 'Darren', 'Kevin', 'Ralph', 'Marvin', 'Harold', 'Justin', 'Lawrence', 'Samuel', 'Santino', 'Jayson', 'Nathan', 'Dominic', 'Leandro', 'Arnold', 'Albert', 'Oscar', 'Cedric', 'Ezekiel', 'Jeremiah', 'Ramon', 'Clyde', 'Reymond', 'Emmanuel', 'Tristan', 'Elijah', 'Axel', 'Eugene', 'Jonathan', 'Arthur', 'Christopher', 'Arnold', 'Jared', 'Sean', 'Clyde', 'Russell', 'Elijah', 'Ryan', 'Gabriel', 'Zane', 'Louis', 'Joseph', 'Rico', 'Rowell', 'Jerome', 'Lance', 'Gilbert', 'Darren', 'Edward', 'Harvey', 'Emmanuel', 'John', 'Marco', 'Jayson', 'Anthony', 'John', 'Joseph', 'Jayden', 'Sean', 'Francis', 'Tristan', 'Erwin', 'Christopher', 'Marvin', 'Marvin', 'Peter', 'Mark', 'Alfred', 'Marco', 'Rome', 'Russell', 'Darren', 'Emmanuel', 'Jayden', 'Peter', 'Noah', 'Nathan', 'Dominic', 'Marvin', 'Richard', 'Sean', 'Stephen', 'Santino', 'James', 'Joel', 'Clarence', 'Darren', 'Oscar', 'Brylle', 'Daniel', 'Darren', 'Jayden', 'Arthur', 'Earl', 'Marco', 'Jose', 'Kian', 'Angelo', 'Jay', 'Erwin', 'Arthur', 'Rowell', 'Kyle', 'Roland', 'Kurt', 'Darren', 'Noel', 'Christian', 'Jonathan', 'Edgar', 'Renz', 'Erwin', 'Daniel', 'Lawrence', 'Steven', 'Lance', 'Jonathan', 'Tristan', 'Noel', 'Lloyd', 'Erwin', 'John', 'Rome', 'Samuel', 'Ronald', 'Daryl', 'Simon', 'Enzo', 'Carlo', 'Rico', 'Harvey', 'Ferdinand', 'Gilbert', 'Louie', 'Eugene', 'Renz', 'Patrick', 'Alonzo', 'Jay', 'Paolo', 'Gilbert', 'Albert', 'Romeo', 'Arnold', 'Christian', 'Cedric', 'Jose', 'Eugene', 'Lance', 'Victor', 'Ezekiel', 'Earl', 'Richard', 'Peter', 'Lance', 'Axel', 'Patrick', 'Arthur', 'Oscar', 'Harold', 'Clifford', 'Dean', 'Robert', 'Jeremiah', 'Jethro', 'Rowell', 'Albert', 'Paolo', 'Jared', 'Emmanuel', 'Jayson', 'Roland', 'Juan', 'Jay', 'Jason', 'Elijah', 'Vincent', 'Cesar', 'Michael', 'Ryan', 'Jeffrey', 'Rene', 'Angelo', 'Robert', 'Patrick', 'Aaron', 'Jonathan', 'Stephen', 'Cedric', 'Daniel', 'Kenzo', 'Alonzo', 'Kenzo', 'Patrick', 'Jethro', 'Leonard', 'Stephen', 'Allen', 'Axel', 'Justin', 'Zion', 'Arthur', 'Joel', 'Patrick', 'Dean', 'Ben', 'Stephen', 'Lawrence', 'Simon', 'Gerald', 'Gilbert', 'Rafael', 'Kurt', 'Samuel', 'Russell', 'Bryan', 'Santino', 'Sean', 'Peter', 'Ronald', 'Kyle', 'Leandro', 'Tony', 'Jayden', 'Bryan', 'Mathew', 'Jayson', 'Mathew', 'Ian', 'Robert', 'Joshua', 'Earl', 'Alonzo', 'Xander', 'Alfred', 'Oscar', 'Rene', 'Noah', 'Dennis', 'Kenneth', 'Daryl', 'Alfred', 'Leonard', 'Paul', 'Ryan', 'Enzo', 'Roland', 'Clarence', 'Mark', 'Darren', 'Zion', 'Sean', 'Michael', 'Miguel', 'Erwin', 'Harley', 'John', 'Darren', 'Cedric', 'Matteo', 'Erwin', 'Xander', 'Jeremiah', 'Neil', 'Paul', 'Jayden', 'Jomar', 'Jeremiah', 'Clarence', 'Rome', 'Joshua', 'Francis', 'Clifford', 'Raymond', 'Dennis', 'Jonathan', 'Lance', 'Tony', 'Jared', 'Sean', 'Axel', 'Nathan', 'Mark', 'Angelo', 'Darren', 'Simon', 'Stephen', 'Allan', 'Jerome', 'Christopher', 'Edgar', 'Isaac', 'Tristan', 'Tony', 'Zion', 'Isaac', 'Dennis', 'Carlo', 'Harley', 'Justin', 'Peter', 'Axel', 'Lawrence', 'Joshua', 'Enzo', 'Darrel', 'Jethro', 'Edgar', 'Jonathan', 'Rafael', 'Joseph', 'Ronald', 'Miguel', 'Joseph', 'Mathew', 'Zachary', 'Rome', 'Alonzo', 'Gabriel', 'Rey', 'Adrian', 'Jomar', 'Zane', 'Renz', 'Eugene', 'Matteo', 'Juan', 'Alonzo', 'Edward', 'Aiden', 'Kurt', 'Alonzo', 'Raymond', 'Carlo', 'Arnold', 'Clarence', 'Kenneth', 'Kyle', 'Ferdinand', 'Matteo', 'Zion', 'Harold', 'Harley', 'Jacob', 'Noel', 'Gerald', 'Paolo', 'Jacob', 'Kenneth', 'Elric', 'Jerome', 'Arnold', 'Rene', 'Harley', 'Ezekiel', 'Christian', 'Clarence', 'Justin', 'Russell', 'Reymond', 'Jeremiah', 'Kevin', 'Carlo', 'Stephen', 'Simon', 'Romeo', 'Jonathan', 'Alfred', 'James', 'Victor', 'Jason', 'Edward', 'Ezekiel', 'Clarence', 'John', 'Harold', 'Joshua', 'Nelson', 'Jared', 'Leonard', 'Harley', 'Allen', 'Dennis', 'Paolo', 'Ramon', 'Miguel', 'Rico', 'Joel', 'Juan', 'Jay', 'Arthur', 'Eugene', 'Roderick', 'Santino', 'Arvin', 'Arvin', 'Jayson', 'Richard', 'Allan', 'Zachary', 'Arvin', 'Kian', 'Dean', 'Clifford', 'Zion', 'Jeffrey', 'Jeremiah', 'Philip', 'Daniel', 'Tony', 'Dennis', 'Ryan', 'Dennis', 'Marco', 'Lucas', 'Rome', 'Gilbert', 'Darren', 'Clyde', 'Alexander', 'Leandro', 'Zane', 'Kurt', 'Paolo', 'Leonard', 'Marvin', 'Ian', 'Kurt', 'Jayson', 'Cedrick', 'Jomar', 'Ryan', 'Lance', 'Sean', 'Kurt', 'Roland', 'Darrel', 'Patrick', 'Marvin', 'Kenneth', 'Richard', 'Martin', 'Nelson', 'Daryl', 'Rome', 'Neil', 'Zane', 'Anthony', 'Roland', 'Alfred', 'Jeremiah', 'Russell', 'Jerome', 'Romeo', 'Daryl', 'Nathan', 'Edward', 'Tony', 'Mark', 'Emmanuel', 'Stephen', 'Jayden', 'Kevin', 'Edgar', 'Renz', 'Cesar', 'Victor', 'Clifford', 'Rafael', 'Clifford', 'Noel', 'Kian', 'Juan', 'Matteo', 'Marvin', 'Elric', 'Edgar', 'Erwin', 'Harvey', 'Daniel', 'Alfred', 'Jonathan', 'Philip', 'Richard', 'Alonzo', 'Patrick', 'Noah', 'Raymond', 'Clarence', 'Jomar', 'Ryan', 'Elijah', 'Xander', 'Alfred', 'Brylle', 'Tony', 'Harley', 'Rey', 'Clyde', 'Daniel', 'Ramon', 'Robert', 'Rico', 'Carl', 'Cesar', 'Leo', 'Steven', 'Clarence', 'Reymond', 'Noel', 'Kenneth', 'Tony', 'Alfred', 'Paul', 'Rowell', 'Dennis', 'Francis', 'Steven', 'Patrick', 'Roland', 'Nelson', 'Alvin', 'Rico', 'Leandro', 'John', 'Jay', 'Christopher', 'Allan', 'Rico', 'Tristan', 'Miguel', 'Russell', 'Zion', 'Jomar', 'Gabriel', 'Mark', 'Marco', 'Francis', 'Paul', 'Neil', 'Timothy', 'Arvin', 'Juan', 'Nelson', 'Mark', 'Daniel', 'Leonard', 'Simon', 'Jonathan', 'Ramon', 'Ronald', 'Earl', 'Darrel', 'Patrick', 'Reymond', 'Christopher', 'Neil', 'Harvey', 'Robert', 'Alonzo', 'Allan', 'Timothy', 'Thomas', 'Jerome', 'Stephen', 'Allan', 'Alexander', 'Kenzo', 'Earl', 'Arthur', 'Ian', 'Clyde', 'Jeremiah', 'Harvey', 'Leandro', 'Lucas', 'Jay', 'Noel', 'Ronald', 'Clyde', 'Clifford', 'Allan', 'Mathew', 'Bryan', 'Samuel', 'Daryl', 'Robert', 'Jay', 'Alexander', 'Joseph', 'Noel', 'Jared', 'Patrick', 'Tony', 'Patrick', 'Jayson', 'Christian', 'Tony', 'Bryan', 'James', 'Kenneth', 'Thomas', 'Romeo', 'Edward', 'Justin', 'Rico', 'Russell', 'Thomas', 'Arnold', 'Ferdinand', 'Kevin', 'Jose', 'Jomar', 'Samuel', 'Daryl', 'Patrick', 'Michael', 'Darren', 'Paolo', 'Lance', 'Aaron', 'Lance', 'Gabriel', 'Juan', 'Kevin', 'Gabriel', 'Neil', 'Rowell', 'Rico', 'Allen', 'Darren', 'Noah', 'Dean', 'Lance', 'Leandro', 'Roland', 'Romeo', 'Philip', 'Ryan', 'Jared', 'Alfred', 'Elijah', 'Russell', 'Edgar', 'Enzo', 'Ryan', 'Darren', 'Simon', 'Noah', 'Edgar', 'Allen', 'Axel', 'Lucas', 'Tristan', 'Clarence', 'Sean', 'Stephen', 'Nelson', 'Romeo', 'Kenneth', 'Rome', 'Louis', 'James', 'Sean', 'Daniel', 'Rene', 'Clarence', 'Emmanuel', 'Daniel', 'Lawrence', 'Romeo', 'Alonzo', 'Bryan', 'Earl', 'Ramon', 'Justin', 'Zane', 'Daniel', 'Simon', 'Joel', 'Romeo', 'Zion', 'Patrick', 'Christopher', 'Clyde', 'Tristan', 'Gerald', 'Allen', 'Paul', 'Jayson', 'Joshua', 'Justin', 'Sean', 'Ferdinand', 'Gabriel', 'Lucas', 'Kenneth', 'Jacob', 'Jason', 'Ramon', 'Gilbert', 'Roland', 'Cedrick', 'Santino', 'Erwin', 'Edward', 'James', 'Dennis', 'Daryl', 'Cesar', 'Allen', 'Santino', 'Oscar', 'Dominic', 'Alonzo', 'Axel', 'Rowell', 'Cedric', 'Tony', 'Jacob', 'Kenneth', 'Patrick', 'Adrian', 'Christian', 'Santino', 'Kian', 'Jose', 'Gabriel', 'Rowell', 'Christopher', 'Patrick', 'Cedric', 'Harvey', 'Thomas', 'Zion', 'Kyle', 'Darren', 'Louie', 'Darrel', 'Isaac', 'Angelo', 'Neil', 'Michael', 'Louie', 'Miguel', 'Kian', 'Noah', 'Nathan', 'Lloyd', 'Ryan', 'Tristan', 'Anthony', 'Victor', 'Albert', 'Enzo', 'Timothy', 'Angelo', 'Rene', 'Ferdinand', 'Miguel', 'Kevin', 'Anthony', 'Enzo', 'Joel', 'Leonard', 'Leo', 'Enzo', 'Jeffrey', 'Clifford', 'Ryan', 'Alfred', 'Allan', 'Martin', 'Richard', 'Darren', 'Edward', 'Rey', 'Arvin', 'Axel', 'Rey', 'Robert', 'Jeremiah', 'Brylle', 'Oscar', 'Erwin', 'Patrick', 'Jerome', 'Jay', 'Arnold', 'Richard', 'Kevin', 'Kenneth', 'Roderick', 'Clarence', 'Lloyd', 'Kyle', 'Jayson', 'Isaac', 'Jayden', 'Arvin', 'Elric', 'Alonzo', 'Edgar', 'Erwin', 'Russell', 'Aaron', 'Roderick', 'Steven', 'Jerome', 'Robert', 'Gerald', 'Philip', 'Robert', 'Erwin', 'Tristan', 'Ryan', 'Christopher', 'Leo', 'Clyde', 'Arnold', 'Christian', 'Erwin', 'Harvey', 'Gerald', 'Ian', 'Carl', 'Bryan', 'Kurt', 'Aaron', 'Edgar', 'Samuel', 'Cedrick', 'Rome', 'Aiden', 'Ramon', 'Marco', 'Marco', 'Dean', 'Rene', 'Tristan', 'Lawrence', 'Reymond', 'Raymond', 'Leonard', 'Justin', 'Gerald', 'Philip', 'Kenneth', 'Darren', 'Louis', 'Kurt', 'Axel', 'Lucas', 'Peter', 'Anthony', 'Arvin', 'Aaron', 'Zane', 'Brylle', 'Juan', 'Earl', 'Simon', 'Russell', 'Kian', 'Dennis', 'Jared', 'Elijah', 'Louie', 'Anthony', 'Thomas', 'Christopher', 'Clifford', 'Gilbert', 'Santino', 'Albert', 'Jeremiah', 'Harold', 'Paul', 'Patrick', 'Arvin', 'Joshua', 'Nathan', 'Aaron', 'Sean', 'Lance', 'James', 'Clyde', 'Bryan', 'Samuel', 'Edgar', 'Isaac', 'Gabriel', 'Santino', 'Tristan', 'Samuel', 'Ryan', 'Vincent', 'Dominic', 'John', 'Patrick', 'Darrel', 'Lawrence', 'Enzo', 'Arthur', 'Matteo', 'Alvin', 'Darrel', 'Tony', 'Ryan', 'Noah', 'Peter', 'Martin', 'Tony', 'Rowell', 'Anthony', 'Robert', 'Erwin', 'Stephen', 'Ramon', 'Vincent', 'Francis', 'Reymond', 'Emmanuel', 'James', 'Alvin', 'Jethro', 'Ian', 'Victor', 'Michael', 'Leo', 'Gilbert', 'Kurt', 'Ferdinand', 'Alexander', 'Steven', 'Ben', 'Rene', 'Dennis', 'Nathan', 'Albert', 'Carlo', 'Louis', 'Mark', 'Zion', 'Rene', 'Alfred', 'Renz', 'Arthur', 'Noah', 'Darrel', 'Dennis', 'Rene', 'Aiden', 'Dominic', 'Matteo', 'Thomas', 'Gabriel', 'Alonzo', 'James', 'Albert', 'Juan', 'Patrick', 'James', 'Aiden', 'Roland', 'Lloyd', 'Jayden', 'Timothy', 'Christopher', 'Ben', 'Jay', 'Kian', 'Leandro', 'Albert', 'Kenzo', 'Russell', 'Harvey', 'Paolo', 'Arthur', 'Steven', 'Harold', 'Martin', 'Ralph', 'Carl', 'Kurt', 'Jerome', 'Oscar', 'Adrian', 'Tony', 'Cedric', 'Ben', 'Earl', 'Alexander', 'Brylle', 'James', 'Lloyd', 'Carlo', 'Christian', 'Jayson', 'Eugene', 'Roland', 'Mark', 'Alexander', 'Carl', 'Dennis', 'Jayden', 'Francis', 'Nathan', 'Erwin', 'Robert', 'Harley', 'Marco', 'Philip', 'Albert', 'Roland', 'Roderick', 'Jacob', 'Paul', 'Eugene', 'Jeremiah', 'Robert', 'Ben', 'Jonathan', 'Roderick', 'Justin', 'Darrel', 'Lloyd', 'Miguel', 'Xander', 'Zachary', 'Darren', 'Noel', 'Patrick', 'Simon', 'Kyle', 'Axel', 'Cesar', 'Jonathan', 'Roland', 'Dean', 'Oscar', 'Tony', 'Ian', 'Simon', 'Arvin', 'Kian', 'Edward', 'Rowell', 'Vincent', 'Noah', 'Victor', 'Roland', 'Ben', 'Peter', 'Daryl', 'Carl', 'Jethro', 'Erwin', 'Matteo', 'Louis', 'Rafael', 'John', 'Leonard', 'Gabriel', 'Romeo', 'Reymond', 'Michael', 'Jerome', 'Gabriel', 'Juan', 'Kurt', 'Erwin', 'Zane', 'Kian', 'Kevin', 'Eugene', 'Arthur', 'Tristan', 'Jay', 'Elijah', 'Roland', 'Adrian', 'Russell', 'Rico', 'Jacob', 'Edgar', 'Elric', 'Steven', 'Joseph', 'Louis', 'Gabriel', 'Brylle', 'Aiden', 'Jomar', 'Gabriel', 'Rene', 'Marco', 'Elijah', 'Martin', 'Gilbert', 'Francis', 'Samuel', 'Jethro', 'Adrian', 'Arthur', 'Alvin', 'Lance', 'Dominic', 'Edgar', 'Jayden', 'Samuel', 'Joshua', 'Kevin', 'Brylle', 'Aaron', 'Paolo', 'Steven', 'Ben', 'Lucas', 'Jayden', 'Nathan', 'Juan', 'Arthur', 'Rene', 'Ramon', 'Rafael', 'Axel', 'Tony', 'Ferdinand', 'Nathan', 'Marvin', 'Christopher', 'Noah', 'Joshua', 'Nathan', 'Kenzo', 'Jayson', 'Justin', 'Neil', 'Erwin', 'Nelson', 'Harvey', 'Zane', 'Paolo', 'Harold', 'Allan', 'Carlo', 'Zane', 'Albert', 'Elijah', 'Alexander', 'Louis', 'Rene', 'Cesar', 'Dennis', 'Marco', 'Rafael', 'Rafael', 'Alexander', 'Ben', 'Tristan', 'Miguel', 'Tristan', 'Dean', 'Lucas', 'Jared', 'Lloyd', 'Alvin', 'Jose', 'Matteo', 'Kian', 'Lawrence', 'Jerome', 'Kurt', 'Ryan', 'Robert', 'Zion', 'Jonathan', 'Francis', 'Mathew', 'John', 'Samuel', 'Elric', 'Jason', 'Alonzo', 'Nathan', 'Romeo', 'Gerald', 'Kian', 'Ben', 'Ferdinand', 'Jason', 'Clifford', 'Kenzo', 'Paul', 'Jerome', 'Albert', 'Jose', 'Darren', 'Kevin', 'Isaac', 'Louie', 'Jerome', 'Clarence', 'Santino', 'Jerome', 'Axel', 'Robert', 'Ian', 'Lucas', 'Jerome', 'Lloyd', 'Ronald', 'Jared', 'John', 'Richard', 'Jacob', 'Jomar', 'Gilbert', 'Carl', 'Lucas', 'Ferdinand', 'Axel', 'Alonzo', 'Albert', 'Ronald', 'Zane', 'Christian', 'Miguel', 'Harley', 'Leo', 'Harvey', 'Kenneth', 'Clifford', 'Rowell', 'Cedrick', 'Ian', 'Jayson', 'Rowell', 'Romeo', 'Patrick', 'Harvey', 'Edward', 'Clifford', 'Jomar', 'Isaac', 'Alfred', 'Daniel', 'Juan', 'Leandro', 'Lloyd', 'Angelo', 'Jomar', 'Brylle', 'Dennis', 'Harold', 'Louie', 'Zion', 'Tony', 'Dominic', 'Gilbert', 'Allan', 'Thomas', 'Miguel', 'Ronald', 'Paul', 'Arvin', 'Xander', 'Nelson', 'Raymond', 'Bryan', 'Michael', 'Sean', 'Patrick', 'Jomar', 'Aaron', 'Daryl', 'Enzo', 'Jose', 'Xander', 'Jay', 'Dominic', 'Carl', 'Rome', 'Arvin', 'Oscar', 'Dean', 'Ronald', 'Rico', 'Daniel', 'Vincent', 'Marco', 'Harley', 'Victor', 'Patrick', 'Nelson', 'Cedric', 'Clifford', 'Mark', 'Jacob', 'Sean', 'Jonathan', 'Nathan', 'Elijah', 'Ben', 'Arnold', 'Rico', 'Edward', 'Leonard', 'Earl', 'Lloyd', 'Emmanuel', 'Daniel', 'Sean', 'Timothy', 'Alfred', 'Rafael', 'Gilbert', 'Marco', 'Gilbert', 'Rey', 'Zane', 'Axel', 'Roderick', 'Robert', 'Isaac', 'Jerome', 'Oscar', 'Jonathan', 'Earl', 'Neil', 'John', 'Jerome', 'Patrick', 'Renz', 'Miguel', 'Robert', 'Arthur', 'Arnold', 'Michael', 'Leandro', 'Philip', 'Jose', 'Earl', 'Louie', 'Axel', 'Ramon', 'Edgar', 'Darrel', 'Harold', 'Steven', 'Darrel', 'Allen', 'Alexander', 'Kyle', 'Anthony', 'Lloyd', 'Stephen', 'Erwin', 'Gilbert', 'Rico', 'Zachary', 'Ralph', 'Jayden', 'Leandro', 'Leandro', 'Mathew', 'Roland', 'Noah', 'Earl', 'Edward', 'Timothy', 'Cedrick', 'Christopher', 'Tristan', 'Louie', 'Dennis', 'Adrian', 'Martin', 'Arnold', 'Erwin', 'Roland', 'Jason', 'Joel', 'Roderick', 'Santino', 'Dean', 'Jose', 'Leonard', 'Ramon', 'Harley', 'Anthony', 'Lloyd', 'Jacob', 'Jayson', 'Rene', 'Lawrence', 'Ryan', 'Ralph', 'John', 'Clyde', 'Rowell', 'Jose', 'Christopher', 'Darrel', 'Eugene', 'Gilbert', 'Mark', 'Ferdinand', 'Nelson', 'Bryan', 'Rowell', 'Ronald', 'Tony', 'Adrian', 'Lloyd', 'Brylle', 'Xander', 'Joel', 'Tony', 'Bryan', 'Romeo', 'Joshua', 'Kian', 'Matteo', 'Noel', 'Paul', 'Simon', 'Carlo', 'Raymond', 'Renz', 'Dominic', 'Louis', 'Kenzo', 'Victor', 'Christopher', 'Neil', 'John', 'Simon', 'Darren', 'Daniel', 'Darrel', 'Raymond', 'Dennis', 'Edward', 'Leonard', 'Clarence', 'John', 'Dean', 'Ronald', 'Leo', 'Nelson', 'Alvin', 'Rico', 'Jayden', 'Kenzo', 'Darren', 'Jerome', 'Simon', 'Tristan', 'Kenneth', 'Vincent', 'Christopher', 'Zachary', 'Miguel', 'Roderick', 'Ryan', 'Gilbert', 'Vincent', 'Philip', 'Zane', 'Russell', 'Cedric', 'Carlo', 'Ryan', 'Matteo', 'Francis', 'Alonzo', 'Clyde', 'Lucas', 'Darrel', 'Dean', 'Marvin', 'Paul', 'Arvin', 'Vincent', 'Daniel', 'Aaron', 'Harvey', 'Jayson', 'Christopher', 'Rey', 'Joel', 'Bryan', 'Jethro', 'Zane', 'Erwin', 'James', 'Rafael', 'Vincent', 'Ezekiel', 'Jonathan', 'Erwin', 'Roderick', 'Paul', 'Leo', 'Reymond', 'Noel', 'Martin', 'Jacob', 'Anthony', 'Ralph', 'Erwin', 'Bryan', 'Kevin', 'Ronald', 'Jose', 'Ferdinand', 'Neil', 'Edgar', 'Axel', 'Joseph', 'Nathan', 'Allan'
 ]
-
 FILIPINO_FIRST_NAMES_FEMALE = [
 'Maria', 'Ana', 'Sofia', 'Isabella', 'Gabriela', 'Valentina', 'Camila',
 'Angelica', 'Nicole', 'Michelle', 'Christine', 'Sarah', 'Jessica',
@@ -971,7 +965,6 @@ FILIPINO_LAST_NAMES = [
 'Yuzon', 'Zabala', 'Zaide', 'Zaldivar', 'Zamora', 'Zandueta', 'Zapanta', 'Zaragoza',
 'Zerrudo', 'Zialcita', 'Zobel', 'Zosa', 'Zulueta'
 ]
-
 RPW_FIRST_NAMES_MALE = [
 'Zephyr', 'Shadow', 'Phantom', 'Blaze', 'Storm', 'Frost', 'Raven', 'Ace',
 'Knight', 'Wolf', 'Dragon', 'Phoenix', 'Thunder', 'Void', 'Eclipse',
@@ -1131,7 +1124,6 @@ RPW_FIRST_NAMES_MALE = [
 'Wyson', 'Wythe', 'Yardley', 'Yeoman', 'Yorath', 'Yule',
 'Zani'
 ]
-
 RPW_FIRST_NAMES_FEMALE = [
 'Luna', 'Aurora', 'Mystic', 'Crystal', 'Sapphire', 'Scarlet', 'Violet',
 'Rose', 'Athena', 'Venus', 'Nova', 'Stella', 'Serena', 'Raven', 'Jade',
@@ -1369,9 +1361,7 @@ RPW_FIRST_NAMES_FEMALE = [
 'Yayoi', 'Yei', 'Yoi', 'Yoko', 'Yori', 'Yoshiko',
 'Yuka', 'Yukako', 'Yukiko', 'Yumi', 'Yumiko', 'Yuri',
 'Yuriko', 'Yutsuko'
-
 ]
-
 RPW_LAST_NAMES = [
 'Shadow', 'Dark', 'Light', 'Star', 'Moon', 'Sun', 'Sky', 'Night', 'Dawn',
 'Storm', 'Frost', 'Fire', 'Stanley', 'Nero', 'Clifford', 'Volsckev',
@@ -1430,13 +1420,11 @@ RPW_LAST_NAMES = [
 'Frost', 'Grimshaw', 'Hawthorne', 'Ironwood', 'Kingsley', 'Lancaster', 'Mercer', 'Nightshade', 'Oakley', 'Pembroke',
 'Radcliffe', 'Shadowfax', 'Thornfield', 'Underwood', 'Vance', 'Whitmore', 'Sterling', 'Ravencroft', 'Ashbury', 'Blackwell'
 ]
-
 ua = UserAgent()
 faker = Faker()
 console=Console()
 live = 0
 cp = 0
-#------------[colour]------------#
 R = "[bold red]"
 Y = "[bold yellow]"
 G = "[bold green]"
@@ -1444,280 +1432,348 @@ B = "[bold blue]"
 P = "[bold purple]"
 C = "[bold cyan]"
 W = "[bold white]"
-#---------------------------#
+O = "[bold orange1]"
+DR = "[bold color(124)]"
+GR = "[bold color(240)]"
 def clear():
     os.system("clear")
-#---------------------------#
 def logo():
-    banner = (
-        f"{C}╦ ╦ ╔═╗ ╦ ╦ ╔╗  ╔╦╗ ╔═╗ ╔╦╗ ╔═╗ ╦═╗\n"
-        f"{Y}║║║ ╠═  ╚╦╝ ║╔╝ ║║║ ╠═╣ ╔╩╗ ╠═  ╠╦╝\n"
-        f"{G}╚╩╝ ╚═╝  ╩  ╚╝  ╩ ╩ ╩ ╩ ╩ ╩ ╚═╝ ╩╚═\n"
-        f"{W}─────────────────────────────────────\n"
-        f"{Y}⚡ {C}FB ACCOUNT CREATOR {W}│ {G}v2.0 {Y}⚡"
-    )
-    print(Panel(banner, border_style="bold cyan", padding=(0, 1)))
-
-
+    logx=Panel(
+        f"{R}  ██████╗{O} ██████╗ {Y}███████╗{R} █████╗ {O}████████╗{Y}███████╗\n"
+        f"{R} ██╔════╝{O}██╔══██╗{Y}██╔════╝{R}██╔══██╗{O}╚══██╔══╝{Y}██╔════╝\n"
+        f"{R} ██║     {O}██████╔╝{Y}█████╗  {R}███████║{O}   ██║   {Y}█████╗  \n"
+        f"{R} ██║     {O}██╔══██╗{Y}██╔══╝  {R}██╔══██║{O}   ██║   {Y}██╔══╝  \n"
+        f"{R} ╚██████╗{O}██║  ██║{Y}███████╗{R}██║  ██║{O}   ██║   {Y}███████╗\n"
+        f"{DR}  ╚═════╝{DR}╚═╝  ╚═╝{DR}╚══════╝{DR}╚═╝  ╚═╝{DR}   ╚═╝   {DR}╚══════╝",
+    border_style="bold color(124)")
+    print(logx)
 def fake_password(custom=None):
     if custom:
         return str(custom)
-    return "PIN#KY1"
-
+    return "weynnorms"
 def get_temp_email(fname, lname, domain_choice=None):
     fname = re.sub(r'\W+', '', fname.lower())
-    lname = re.sub(r'\W+', '', lname.lower())
-    fn = fname
-    ln = lname
-    fi = fname[0] if fname else 'x'
-    li = lname[0] if lname else 'x'
-    yr = random.randint(1990, 2006)
-    n2 = str(random.randint(10, 99))
-    n3 = str(random.randint(100, 999))
-    n4 = str(random.randint(1000, 9999))
-    sfx = random.choice(['ph', 'mnl', 'qc', 'cebu', 'ph2', 'rpw', 'ofic', 'real', '143', 'loves', 'cute', 'ko', 'lang', 'ako'])
-    sep = random.choice(['.', '_', ''])
-
+    lname  = re.sub(r'\W+', '', lname.lower())
+    fi  = fname[0]                        # first initial
+    li  = lname[0]                        # last initial
+    fn3 = fname[:3]                       # first 3 chars of first name
+    fn4 = fname[:4]                       # first 4 chars
+    fn5 = fname[:5]                       # first 5 chars
+    ln3 = lname[:3]                       # first 3 chars of last name
+    ln4 = lname[:4]
+    ln5 = lname[:5]
+    yr  = random.randint(1990, 2007)      # birth year (4-digit)
+    yr2 = str(yr)[2:]                     # birth year (2-digit)
+    n2  = random.randint(10, 99)          # random 2-digit
+    n3  = random.randint(100, 999)        # random 3-digit
+    n4  = random.randint(1000, 9999)      # random 4-digit
+    d2  = str(random.randint(1, 28)).zfill(2)   # day
+    m2  = str(random.randint(1, 12)).zfill(2)   # month
+    seps = ['.', '_', '-', '']
+    s  = random.choice(seps)
+    s2 = random.choice(['.', '_'])       # always visible separator variant
     patterns = [
-        f"{fn}{sep}{ln}",
-        f"{ln}{sep}{fn}",
-        f"{fi}{sep}{ln}",
-        f"{fn}{sep}{li}",
-        f"{fn}{sep}{ln}{n2}",
-        f"{fn}{sep}{ln}{n3}",
-        f"{fn}{sep}{ln}{yr}",
-        f"{fn}{n2}",
-        f"{fn}{n3}",
-        f"{fn}{n4}",
-        f"{ln}{n2}",
-        f"{ln}{sep}{fn}{n2}",
-        f"{fn}{sep}{ln}{sep}{n2}",
-        f"{fi}{ln}{n2}",
-        f"{fi}{ln}{yr}",
-        f"{fn}{li}{n2}",
-        f"{fn}{sep}{sfx}",
-        f"{fn}{sep}{ln}{sep}{sfx}",
-        f"{fn}{sfx}{n2}",
-        f"{fi}{sep}{ln}{sep}{sfx}",
-        f"{fn}{sep}{ln}{yr % 100:02d}",
-        f"{fn}{yr}",
-        f"{ln}{yr}",
-        f"{fn}{sep}{ln[0:3]}",
-        f"{fn[0:3]}{sep}{ln}",
-        f"{fn}{sep}{ln}{sep}{yr}",
-        f"{fi}{li}{n3}",
-        f"{fn}{ln}{n2}",
-        f"{fn}{ln}",
-        f"{fn}_{ln}_{yr}",
+        f"{fname}{s}{lname}",
+        f"{lname}{s}{fname}",
+        f"{fname}{lname}",
+        f"{lname}{fname}",
+        f"{fname}.{lname}",
+        f"{fname}_{lname}",
+        f"{fname}-{lname}",
+        f"{lname}.{fname}",
+        f"{lname}_{fname}",
+        f"{fi}{s}{lname}",
+        f"{fi}{lname}",
+        f"{fi}.{lname}",
+        f"{fi}_{lname}",
+        f"{fname}{s}{li}",
+        f"{fname}{li}",
+        f"{fi}{li}{lname}",
+        f"{fname}{fi}{lname}",
+        f"{fi}{lname}{li}",
+        f"{li}{fname}",
+        f"{li}.{fname}",
+        f"{li}_{fname}",
+        f"{fn3}{lname}",
+        f"{fn4}{lname}",
+        f"{fn5}{lname}",
+        f"{fname}{ln3}",
+        f"{fname}{ln4}",
+        f"{fname}{ln5}",
+        f"{fn3}{s2}{lname}",
+        f"{fn4}{s2}{lname}",
+        f"{fname}{s2}{ln3}",
+        f"{fname}{s2}{ln4}",
+        f"{fn3}{ln3}",
+        f"{fn4}{ln4}",
+        f"{fn3}.{ln3}",
+        f"{fi}{lname[:5]}",
+        f"{fname[:5]}{li}",
+        f"{fname}{yr}",
+        f"{fname}{yr2}",
+        f"{lname}{yr}",
+        f"{lname}{yr2}",
+        f"{fname}{s}{lname}{yr}",
+        f"{fname}{s}{lname}{yr2}",
+        f"{fi}{lname}{yr}",
+        f"{fi}{lname}{yr2}",
+        f"{fname}{li}{yr}",
+        f"{fname}{li}{yr2}",
+        f"{fn3}{lname}{yr2}",
+        f"{fname}{ln3}{yr2}",
+        f"{yr}{fname}",
+        f"{yr}{fname}{s}{lname}",
+        f"{yr2}{fname}",
+        f"{yr2}{fi}{lname}",
+        f"{fname}{n2}",
+        f"{fname}{n3}",
+        f"{fname}{n4}",
+        f"{lname}{n2}",
+        f"{lname}{n3}",
+        f"{fname}{s}{lname}{n2}",
+        f"{fname}{s}{lname}{n3}",
+        f"{fi}{lname}{n2}",
+        f"{fi}{lname}{n3}",
+        f"{fn3}{n2}",
+        f"{fn4}{n3}",
+        f"{fname}{m2}{d2}",
+        f"{fname}{d2}{m2}",
+        f"{fname}{yr}{m2}",
+        f"{fi}{lname}{m2}{d2}",
+        f"{fname}{lname}{m2}{d2}",
+        f"its{fname}",
+        f"im{fname}",
+        f"real{fname}",
+        f"the{fname}",
+        f"official{fname}",
+        f"hey{fname}",
+        f"hi{fname}",
+        f"just{fname}",
+        f"only{fname}",
+        f"{fname}official",
+        f"{fname}real",
+        f"{fname}ph",
+        f"{fname}xo",
+        f"{fname}xx",
+        f"{fname}online",
+        f"{fname}account",
+        f"iam{fname}",
+        f"mr{fname}",
+        f"ms{lname}",
+        f"{fname}{s}{lname}{s}{n2}",
+        f"{fi}{s2}{lname}{yr2}",
+        f"{fn3}{s2}{ln3}{n2}",
+        f"{fname}{yr}{n2}",
+        f"{fi}{lname}{yr}{n2}",
+        f"{lname}{s2}{fi}{n2}",
     ]
     prefix = random.choice(patterns)
-
     if domain_choice == "1":
-        domain = "yuennix.site"
+        domain = "jemm.site"
     elif domain_choice == "2":
+        domain = "yopmail.com"
+    elif domain_choice == "3":
         domain = "weyn.store"
+    elif domain_choice == "4":
+        domain = "astheia.shop"
+    elif domain_choice == "5":
+        domain = "jhames.shop"
+    elif domain_choice == "6":
+        domain = "lilearyth.shop"
+    elif domain_choice == "7":
+        domain = "miztyxmm.store"   
     else:
-        domain = random.choice(['yuennix.site', 'weyn.store'])
-
+        domain = random.choice(['jemm.site', 'yopmail.com', 'weyn.store','astheia.shop','jhames.shop','lilearyth.shop','miztyxmm.store'])
     return f"{prefix}@{domain}"
-
-def get_temp_code(email):
-    _ua = "Mozilla/5.0 (Linux; Android 13; SM-A546E; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/124.0.6367.82 Mobile Safari/537.36 [FBAN/Lite;FBAV/503.0.0.10.107;FBBV/562352462;FBDM/{density=2.625,width=1080,height=2280};FBLC/en_PH;FBOP/1]"
-    for attempt in range(8):
+def _fetch_yopmail_code(login):
+    sess = requests.Session()
+    sess.cookies.set('compte', login)
+    headers = {
+        "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36",
+        "accept": "text/html,*/*;q=0.9",
+        "accept-language": "en-US,en;q=0.9",
+        "referer": "https://yopmail.com/",
+    }
+    for attempt in range(25):
+        if attempt > 0:
+            time.sleep(3)
         try:
-            sess = requests.Session()
-            headers = {
-                "user-agent": _ua,
-                "accept": "application/json, text/plain, */*",
-                "accept-language": "en-PH,en;q=0.9",
-                "referer": "https://tempmail.plus/",
-                "x-requested-with": "XMLHttpRequest",
-                "cookie": f"email={email}"
-            }
-            res = sess.get(
-                f'https://tempmail.plus/api/mails?email={email}&first_id=0&epin',
-                headers=headers, timeout=10
+            r = sess.get(
+                f"https://yopmail.com/mail.php?b={login}&to=inbox",
+                headers=headers, timeout=12
             )
-            data = res.json()
-            if data.get("result") and data.get("mail_list"):
-                for mail in data["mail_list"]:
-                    subject = mail.get("subject", "")
-                    body = str(mail.get("text", "")) + str(mail.get("html", ""))
-                    code = re.search(r'\b(\d{5,8})\b', subject) or re.search(r'\b(\d{5,8})\b', body)
+            if r.status_code != 200:
+                continue
+            soup = BeautifulSoup(r.text, 'html.parser')
+            mail_ids = []
+            for el in soup.find_all('div', id=True):
+                if el['id'].startswith('m'):
+                    mail_ids.append(el['id'][1:])
+            for mid in mail_ids[:5]:
+                subj_el = soup.find('div', id=f'm{mid}')
+                if subj_el:
+                    subj_txt = subj_el.get_text()
+                    code = re.search(r'\b(\d{5,8})\b', subj_txt)
                     if code:
                         return code.group(1)
-            time.sleep(2)
+                try:
+                    mr = sess.get(
+                        f"https://yopmail.com/mail.php?b={login}&id={mid}&to=mail",
+                        headers=headers, timeout=12
+                    )
+                    body = BeautifulSoup(mr.text, 'html.parser').get_text()
+                    code = re.search(r'\b(\d{5,8})\b', body)
+                    if code:
+                        return code.group(1)
+                except Exception:
+                    pass
         except Exception:
-            time.sleep(2)
+            pass
     return None
-
+def get_temp_code(email):
+    login = email.split('@')[0].lower()
+    domain = email.split('@')[1].lower() if '@' in email else ''
+    if domain == 'yopmail.com':
+        return _fetch_yopmail_code(login)
+    sess = requests.Session()
+    headers = {
+        "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36",
+        "accept": "text/html,*/*;q=0.9",
+        "accept-language": "en-US,en;q=0.9",
+    }
+    for attempt in range(25):
+        if attempt > 0:
+            time.sleep(3)
+        try:
+            endpoints = [
+                f"https://{domain}/inbox/{login}",
+                f"https://{domain}/mail/{login}",
+                f"https://{domain}/api/v1/inbox/{login}",
+                f"https://{domain}/rss/{login}",
+            ]
+            for url in endpoints:
+                try:
+                    r = sess.get(url, headers=headers, timeout=10)
+                    if r.status_code == 200 and len(r.text) > 100:
+                        code = re.search(r'\b(\d{5,8})\b', r.text)
+                        if code:
+                            return code.group(1)
+                except Exception:
+                    continue
+        except Exception:
+            pass
+    return None
 def get_bd_number():
     na = random.choice(['77', '78', '59'])
     ni = str(random.randrange(1000, 10000))
     nu = str(random.randrange(10000, 100000))
     nope = '+639%s%s%s' % (na, ni, nu)
     return nope
-
 def extract_form(html):
     soup = BeautifulSoup(html, 'html.parser')
     return {tag.get("name"): tag.get("value") for tag in soup.find_all("input") if tag.get("name")}
-
-DEVICE_POOL = [
-    {"model": "Samsung Galaxy A54", "ua": "Mozilla/5.0 (Linux; Android 13; SM-A546E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "2.625", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
-    {"model": "Samsung Galaxy A34", "ua": "Mozilla/5.0 (Linux; Android 13; SM-A346B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.118 Mobile Safari/537.36", "dpr": "2.0", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="123", "Chromium";v="123", "Not-A.Brand";v="99"'},
-    {"model": "Samsung Galaxy S23", "ua": "Mozilla/5.0 (Linux; Android 13; SM-S911B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "3.0", "vw": "360", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
-    {"model": "Samsung Galaxy A14", "ua": "Mozilla/5.0 (Linux; Android 13; SM-A145R) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.6261.119 Mobile Safari/537.36", "dpr": "2.0", "vw": "360", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="122", "Chromium";v="122", "Not-A.Brand";v="99"'},
-    {"model": "Samsung Galaxy A23", "ua": "Mozilla/5.0 (Linux; Android 12; SM-A235F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.178 Mobile Safari/537.36", "dpr": "2.0", "vw": "384", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="121", "Chromium";v="121", "Not-A.Brand";v="99"'},
-    {"model": "Xiaomi Redmi Note 12", "ua": "Mozilla/5.0 (Linux; Android 13; 23028RA60L) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "2.75", "vw": "393", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
-    {"model": "Xiaomi Redmi 12", "ua": "Mozilla/5.0 (Linux; Android 13; 23053RN02Y) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.118 Mobile Safari/537.36", "dpr": "2.0", "vw": "393", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="123", "Chromium";v="123", "Not-A.Brand";v="99"'},
-    {"model": "Xiaomi Redmi 10C", "ua": "Mozilla/5.0 (Linux; Android 11; 220333QAG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.230 Mobile Safari/537.36", "dpr": "2.0", "vw": "393", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="120", "Chromium";v="120", "Not-A.Brand";v="99"'},
-    {"model": "OPPO A78", "ua": "Mozilla/5.0 (Linux; Android 13; CPH2483) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "2.0", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
-    {"model": "OPPO A58", "ua": "Mozilla/5.0 (Linux; Android 13; CPH2577) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.118 Mobile Safari/537.36", "dpr": "2.0", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="123", "Chromium";v="123", "Not-A.Brand";v="99"'},
-    {"model": "OPPO A18", "ua": "Mozilla/5.0 (Linux; Android 13; CPH2591) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.6261.119 Mobile Safari/537.36", "dpr": "1.5", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="122", "Chromium";v="122", "Not-A.Brand";v="99"'},
-    {"model": "vivo Y36", "ua": "Mozilla/5.0 (Linux; Android 13; V2248) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "2.625", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
-    {"model": "vivo Y22s", "ua": "Mozilla/5.0 (Linux; Android 12; V2206) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.178 Mobile Safari/537.36", "dpr": "2.0", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="121", "Chromium";v="121", "Not-A.Brand";v="99"'},
-    {"model": "vivo Y16", "ua": "Mozilla/5.0 (Linux; Android 12; V2204) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.230 Mobile Safari/537.36", "dpr": "1.5", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="120", "Chromium";v="120", "Not-A.Brand";v="99"'},
-    {"model": "Tecno Camon 20", "ua": "Mozilla/5.0 (Linux; Android 13; CK6n) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.118 Mobile Safari/537.36", "dpr": "2.0", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="123", "Chromium";v="123", "Not-A.Brand";v="99"'},
-    {"model": "Realme C55", "ua": "Mozilla/5.0 (Linux; Android 13; RMX3710) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "2.0", "vw": "393", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
-    {"model": "Realme C35", "ua": "Mozilla/5.0 (Linux; Android 11; RMX3511) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.230 Mobile Safari/537.36", "dpr": "2.0", "vw": "393", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="120", "Chromium";v="120", "Not-A.Brand";v="99"'},
-    {"model": "Motorola Moto G84", "ua": "Mozilla/5.0 (Linux; Android 13; XT2347-3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "2.625", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
-    {"model": "Infinix Hot 40", "ua": "Mozilla/5.0 (Linux; Android 13; X6836) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.6261.119 Mobile Safari/537.36", "dpr": "2.0", "vw": "412", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="122", "Chromium";v="122", "Not-A.Brand";v="99"'},
-    {"model": "iPhone 14", "ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/124.0.6367.88 Mobile/15E148 Safari/604.1", "dpr": "3.0", "vw": "390", "platform": '"iOS"', "sec_ch_ua": '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"'},
-    {"model": "iPhone 13", "ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_7_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/123.0.6312.52 Mobile/15E148 Safari/604.1", "dpr": "3.0", "vw": "390", "platform": '"iOS"', "sec_ch_ua": '"Chromium";v="123", "Google Chrome";v="123", "Not-A.Brand";v="99"'},
-    {"model": "iPhone SE 2022", "ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/122.0.6261.89 Mobile/15E148 Safari/604.1", "dpr": "2.0", "vw": "375", "platform": '"iOS"', "sec_ch_ua": '"Chromium";v="122", "Google Chrome";v="122", "Not-A.Brand";v="99"'},
-    {"model": "Samsung Galaxy A05s", "ua": "Mozilla/5.0 (Linux; Android 13; SM-A057F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "2.0", "vw": "384", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
-    {"model": "Xiaomi POCO M6 Pro", "ua": "Mozilla/5.0 (Linux; Android 13; 23076PC4BI) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.82 Mobile Safari/537.36", "dpr": "2.75", "vw": "393", "platform": '"Android"', "sec_ch_ua": '"Google Chrome";v="124", "Chromium";v="124", "Not-A.Brand";v="99"'},
-]
-
-FBLITE_DEVICE_POOL = [
-    {"model": "Samsung Galaxy A54", "android": "13", "build": "SM-A546E", "density": "2.625", "w": "1080", "h": "2340", "dpr": "2.625", "vw": "412"},
-    {"model": "Samsung Galaxy A34", "android": "13", "build": "SM-A346B", "density": "2.0",   "w": "1080", "h": "2408", "dpr": "2.0",   "vw": "412"},
-    {"model": "Samsung Galaxy A14", "android": "13", "build": "SM-A145R", "density": "2.0",   "w": "1080", "h": "2408", "dpr": "2.0",   "vw": "360"},
-    {"model": "Samsung Galaxy A23", "android": "12", "build": "SM-A235F", "density": "2.0",   "w": "1080", "h": "2400", "dpr": "2.0",   "vw": "384"},
-    {"model": "Samsung Galaxy A05s", "android": "13", "build": "SM-A057F", "density": "2.0",  "w": "1080", "h": "2400", "dpr": "2.0",   "vw": "384"},
-    {"model": "Xiaomi Redmi Note 12", "android": "13", "build": "23028RA60L", "density": "2.75", "w": "1080", "h": "2400", "dpr": "2.75", "vw": "393"},
-    {"model": "Xiaomi Redmi 12", "android": "13", "build": "23053RN02Y", "density": "2.0",   "w": "720",  "h": "1600", "dpr": "2.0",   "vw": "393"},
-    {"model": "Xiaomi Redmi 10C", "android": "11", "build": "220333QAG", "density": "2.0",   "w": "720",  "h": "1600", "dpr": "2.0",   "vw": "393"},
-    {"model": "OPPO A78", "android": "13", "build": "CPH2483", "density": "2.0",   "w": "1080", "h": "2400", "dpr": "2.0",   "vw": "412"},
-    {"model": "OPPO A58", "android": "13", "build": "CPH2577", "density": "2.0",   "w": "1080", "h": "2400", "dpr": "2.0",   "vw": "412"},
-    {"model": "OPPO A18", "android": "13", "build": "CPH2591", "density": "1.5",   "w": "720",  "h": "1612", "dpr": "1.5",   "vw": "412"},
-    {"model": "vivo Y36", "android": "13", "build": "V2248", "density": "2.625", "w": "1080", "h": "2408", "dpr": "2.625", "vw": "412"},
-    {"model": "vivo Y22s", "android": "12", "build": "V2206", "density": "2.0",   "w": "1080", "h": "2408", "dpr": "2.0",   "vw": "412"},
-    {"model": "vivo Y16", "android": "12", "build": "V2204", "density": "1.5",   "w": "720",  "h": "1612", "dpr": "1.5",   "vw": "412"},
-    {"model": "Realme C55", "android": "13", "build": "RMX3710", "density": "2.0",   "w": "1080", "h": "2400", "dpr": "2.0",   "vw": "393"},
-    {"model": "Realme C35", "android": "11", "build": "RMX3511", "density": "2.0",   "w": "1080", "h": "2408", "dpr": "2.0",   "vw": "393"},
-    {"model": "Tecno Camon 20", "android": "13", "build": "CK6n", "density": "2.0",   "w": "1080", "h": "2400", "dpr": "2.0",   "vw": "412"},
-    {"model": "Infinix Hot 40", "android": "13", "build": "X6836", "density": "2.0",   "w": "720",  "h": "1612", "dpr": "2.0",   "vw": "412"},
-    {"model": "Motorola Moto G84", "android": "13", "build": "XT2347-3", "density": "2.625", "w": "1080", "h": "2400", "dpr": "2.625", "vw": "412"},
-    {"model": "Xiaomi POCO M6 Pro", "android": "13", "build": "23076PC4BI", "density": "2.75", "w": "1080", "h": "2400", "dpr": "2.75", "vw": "393"},
-]
-
-FBLITE_VERSION = "503.0.0.10.107"
-FBLITE_BUILD   = "562352462"
-FBLITE_LANGS   = ["en_PH", "en_PH", "en_PH", "fil_PH", "en_US"]
-
-def get_fblite_device():
-    d = random.choice(FBLITE_DEVICE_POOL)
-    lang = random.choice(FBLITE_LANGS)
-    wv_ua = (
-        f"Mozilla/5.0 (Linux; Android {d['android']}; {d['build']}; wv) "
-        f"AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/124.0.6367.82 Mobile Safari/537.36 "
-        f"[FBAN/Lite;FBAV/{FBLITE_VERSION};FBBV/{FBLITE_BUILD};"
-        f"FBDM/{{density={d['density']},width={d['w']},height={d['h']}}};"
-        f"FBLC/{lang};FBOP/1]"
-    )
-    d['ua'] = wv_ua
-    d['lang'] = lang
-    return d
-
-def get_device():
-    return random.choice(DEVICE_POOL)
-
 def ugen():
     return ua.random
-
 def save_result(uid, password, cookie):
     folder = "/sdcard/ZUYAN"
     os.makedirs(folder, exist_ok=True)
     with open(f"{folder}/SUCCESS-OK.txt", "a") as f:
         f.write(f"{uid}|{password}|{cookie}\n")
-
-def confirm_id(mail, uid, otp, data, ses, password, device=None):
+FB_LITE_UA = (
+    "Mozilla/5.0 (Linux; Android 12; 2201117TY Build/SKQ1.211006.001; wv) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/109.0.5414.86 "
+    "Mobile Safari/537.36 [FBAN/FB4A;FBAV/439.0.0.0.8;FBBV/443200018;"
+    "FBDM/{density=2.75,width=1080,height=2280};FBLC/en_US;FBRV/0;FBCR/;"
+    "FBMF/Xiaomi;FBBD/Redmi;FBPN/com.facebook.lite;FBDV/2201117TY;"
+    "FBSV/12;FBOP/1;FBCA/armeabi-v7a:armeabi;]"
+)
+def _extract_token(patterns, text):
+    for p in patterns:
+        m = re.search(p, text)
+        if m:
+            return m.group(1)
+    return ""
+def confirm_id(mail, uid, otp, data, ses, password):
     try:
-        if device is None:
-            device = get_fblite_device()
-        fb_dtsg_match = re.search(r'"token":"([^"]+)"', str(data))
-        fb_dtsg = fb_dtsg_match.group(1) if fb_dtsg_match else ""
-        jazoest_match = re.search(r'name="jazoest" value="(\d+)"', str(data))
-        jazoest = jazoest_match.group(1) if jazoest_match else ""
-        lsd_match = re.search(r'name="lsd" value="([^"]+)"', str(data))
-        lsd = lsd_match.group(1) if lsd_match else ""
-
+        src = str(data)
+        fb_dtsg = _extract_token([
+            r'"token":"([^"]+)"',
+            r'name="fb_dtsg" value="([^"]+)"',
+            r'\["DTSGInitData"[^\]]*\],\{"token":"([^"]+)"',
+        ], src)
+        jazoest = _extract_token([
+            r'name="jazoest" value="(\d+)"',
+            r'"jazoest":"(\d+)"',
+        ], src)
+        lsd = _extract_token([
+            r'name="lsd" value="([^"]+)"',
+            r'"LSD",\[\],\{"token":"([^"]+)"\}',
+            r'"lsd":"([^"]+)"',
+        ], src)
+        rev = _extract_token([r'"client_revision":(\d+)', r'"server_revision":(\d+)'], src) or "1015920645"
+        url = "https://m.facebook.com/confirmation_cliff/"
         params = {
             'contact': mail,
-            'type': "submit",
-            'is_soft_cliff': "false",
-            'medium': "email",
-            'code': otp
+            'type': 'submit',
+            'is_soft_cliff': 'false',
+            'medium': 'email',
+            'code': otp,
         }
         payload = {
             'fb_dtsg': fb_dtsg,
             'jazoest': jazoest,
             'lsd': lsd,
-            '__dyn': "7xe6WByk5Q9UoHaEWBTCGiEsi9oi2q0Bo1qexi4N6oniE98XwFw",
-            '__csr': "",
-            '__req': "4",
-            '__a': "1",
+            '__dyn': '7xeUmwlEnwn8K2WnFwn84a2i5U4e1Fx-ewSwAyUrxCG2O1aDxu2e0GE8xojxi3-4UABwrUmwlE8G-1-2h1px-0nE7i2i3iaohx2-0gKGq326EheV5mxvumFoqmCFoqm_9U9U2Jy5mzU',
+            '__csr': '',
+            '__req': str(random.randint(4, 12)),
+            '__a': '1',
             '__user': uid,
-            '__rev': "1017688608",
-            '__s': f"{random.randint(100000,999999)}:0:0",
+            '__rev': rev,
+            '__s': f'{random.randint(0,9)}:{random.randint(0,9)}:{random.randint(0,9)}',
             '__hsi': str(random.randint(7000000000000000000, 7999999999999999999)),
-            '__comet_req': "0",
-            'fb_api_caller_class': "RelayModern",
-            'fb_api_req_friendly_name': "MConfirmEmailMutation",
+            '__comet_req': '0',
+            'action': 'confirm',
         }
-        lang = device.get('lang', 'en_PH')
-        headers = {
-            'user-agent': device['ua'],
-            'accept': '*/*',
-            'accept-encoding': 'gzip, deflate, br',
-            'accept-language': f'{lang.replace("_","-")},en;q=0.9',
-            'content-type': 'application/x-www-form-urlencoded',
-            'origin': 'https://m.facebook.com',
-            'referer': f'https://m.facebook.com/confirmemail.php?next=https%3A%2F%2Fm.facebook.com%2F%3Fdeoia%3D1',
-            'sec-fetch-dest': 'empty',
-            'sec-fetch-mode': 'cors',
+        post_headers = {
+            'User-Agent': FB_LITE_UA,
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8',
+            'Cache-Control': 'max-age=0',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Origin': 'https://m.facebook.com',
+            'Referer': f'https://m.facebook.com/confirmemail.php?soft=hjk',
+            'sec-ch-prefers-color-scheme': 'light',
+            'sec-ch-ua': '"Android WebView";v="109", "Chromium";v="109", "Not_A Brand";v="24"',
+            'sec-ch-ua-mobile': '?1',
+            'sec-ch-ua-model': '"2201117TY"',
+            'sec-ch-ua-platform': '"Android"',
+            'sec-ch-ua-platform-version': '"12"',
+            'sec-fetch-dest': 'document',
+            'sec-fetch-mode': 'navigate',
             'sec-fetch-site': 'same-origin',
-            'x-asbd-id': '129477',
-            'x-fb-lsd': lsd,
+            'sec-fetch-user': '?1',
+            'upgrade-insecure-requests': '1',
             'x-requested-with': 'com.facebook.lite',
-            'dpr': device['dpr'],
-            'viewport-width': device['vw'],
+            'x-fb-lsd': lsd,
+            'x-asbd-id': '129477',
         }
-        url = "https://m.facebook.com/confirmation_cliff/"
-        response = ses.post(url, params=params, data=payload, headers=headers, timeout=15)
-        if "checkpoint" not in str(response.url) and "checkpoint" not in response.text[:500]:
+        response = ses.post(url, params=params, data=payload, headers=post_headers, allow_redirects=True)
+        if "checkpoint" in str(response.url):
+            pass
+        else:
             cookie = ";".join([f"{k}={v}" for k, v in ses.cookies.get_dict().items()])
             print(Panel(f"{G}[{Y}✓{G}]{W} UID: {G}{uid}\n{G}[{Y}✓{G}]{W} PASS: {G}{password}\n{G}[{Y}✓{G}]{W} COOKIE: {G}{cookie}\n", title="SUCCESS", border_style="bold green"))
             save_result(uid, password, cookie)
     except Exception:
         pass
-
 def register_account(domain_choice, name_option, gender_option):
     global live, cp
     while True:
         try:
-            device = get_fblite_device()
             ses = requests.Session()
-            adapter = requests.adapters.HTTPAdapter(max_retries=3)
-            ses.mount('https://', adapter)
-            ses.headers.update({
-                'user-agent': device['ua'],
-                'x-requested-with': 'com.facebook.lite',
-            })
-            res = ses.get('https://m.facebook.com/reg/', timeout=15)
+            res = ses.get('https://m.facebook.com/reg/')
             form = extract_form(res.text)
-
             if gender_option == "1":
                 gender = "2"
                 g_type = "male"
@@ -1731,27 +1787,22 @@ def register_account(domain_choice, name_option, gender_option):
                 else:
                     gender = "1"
                     g_type = "female"
-
             if name_option == "1":
                 first_names = FILIPINO_FIRST_NAMES_MALE if g_type == "male" else FILIPINO_FIRST_NAMES_FEMALE
                 last_names = FILIPINO_LAST_NAMES
             else:
-                first_names = RPW_NAMES_MALE if g_type == "male" else RPW_NAMES_FEMALE
+                first_names = RPW_FIRST_NAMES_MALE if g_type == "male" else RPW_FIRST_NAMES_FEMALE
                 last_names = RPW_LAST_NAMES
-
             fname = random.choice(first_names)
             lname = random.choice(last_names)
-
             email = get_temp_email(fname, lname, domain_choice)
             password = fake_password(globals().get('CUSTOM_PASS'))
-
             from urllib.parse import quote as _uq
             _pt = form.get('privacy_mutation_token', '')
             if _pt:
                 _reg_url = f"https://m.facebook.com/reg/submit/?privacy_mutation_token={_uq(_pt)}&multi_step_form=1&skip_suma=0&shouldForceMTouch=1"
             else:
                 _reg_url = "https://m.facebook.com/reg/submit/?multi_step_form=1&skip_suma=0&shouldForceMTouch=1"
-
             payload = {
                 'ccp': '2',
                 'reg_instance': form.get('reg_instance'),
@@ -1773,35 +1824,85 @@ def register_account(domain_choice, name_option, gender_option):
                 'lsd': form.get('lsd'),
                 '__dyn': '', '__csr': '', '__req': 'q', '__a': '', '__user': '0'
             }
-            lang = device.get('lang', 'en_PH')
             headers = {
                 'authority': 'm.facebook.com',
                 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                'accept-language': f'{lang.replace("_","-")},en-US;q=0.9,en;q=0.8',
-                'accept-encoding': 'gzip, deflate, br',
+                'accept-language': 'en-US;q=0.8,en;q=0.7',
                 'cache-control': 'max-age=0',
-                'content-type': 'application/x-www-form-urlencoded',
-                'dpr': device['dpr'],
-                'viewport-width': device['vw'],
-                'origin': 'https://m.facebook.com',
-                'referer': 'https://m.facebook.com/reg/',
+                'dpr': '2',
+                'referer': 'https://m.facebook.com/login/save-device/',
+                'sec-ch-prefers-color-scheme': 'light',
+                'sec-ch-ua': '"Android WebView";v="109", "Chromium";v="109", "Not_A Brand";v="24"',
+                'sec-ch-ua-mobile': '?1',
+                'sec-ch-ua-platform': '"Android"',
                 'sec-fetch-dest': 'document',
                 'sec-fetch-mode': 'navigate',
                 'sec-fetch-site': 'same-origin',
                 'sec-fetch-user': '?1',
                 'upgrade-insecure-requests': '1',
-                'user-agent': device['ua'],
+                'user-agent': FB_LITE_UA,
                 'x-requested-with': 'com.facebook.lite',
-                'x-fb-friendly-name': 'MRegisterMutation',
+                'viewport-width': '980'
             }
-            reg = ses.post(_reg_url, data=payload, headers=headers, timeout=20)
+            reg = ses.post(_reg_url, data=payload, headers=headers)
             cookies = ses.cookies.get_dict()
             if "c_user" in cookies:
                 uid = cookies["c_user"]
-                print(Panel(f"{G}[{Y}✓{G}]{W} LIVE: {G}{uid}\n{G}[{Y}✓{G}]{W} PASS: {G}{password}\n{G}[{Y}✓{G}]{W} NAME: {G}{fname} {lname}\n{G}[{Y}✓{G}]{W} MAIL: {G}{email}\n{G}[{Y}✓{G}]{W} DEV: {C}{device['model']}", border_style="bold green"))
+                fresh_data = reg.text
+                _ch = {
+                    'User-Agent': FB_LITE_UA,
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                    'Accept-Language': 'en-US,en;q=0.9',
+                    'Referer': 'https://m.facebook.com/',
+                    'x-requested-with': 'com.facebook.lite',
+                }
+                try:
+                    _cp = ses.get(
+                        'https://m.facebook.com/confirmemail.php?soft=hjk',
+                        headers=_ch, timeout=12, allow_redirects=True
+                    )
+                    if _cp.status_code == 200 and len(_cp.text) > 500:
+                        fresh_data = _cp.text
+                        soup = BeautifulSoup(_cp.text, 'html.parser')
+                        form = soup.find('form')
+                        if form:
+                            action = form.get('action', '')
+                            if action and not action.startswith('http'):
+                                action = 'https://m.facebook.com' + action
+                            if not action:
+                                action = 'https://m.facebook.com/confirmemail.php'
+                            form_fields = {
+                                inp.get('name'): inp.get('value', '')
+                                for inp in form.find_all('input')
+                                if inp.get('name')
+                            }
+                            _rh = {
+                                **_ch,
+                                'Referer': 'https://m.facebook.com/confirmemail.php?soft=hjk',
+                                'Origin': 'https://m.facebook.com',
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            }
+                            _rr = ses.post(
+                                action, data=form_fields,
+                                headers=_rh, timeout=12, allow_redirects=True
+                            )
+                            if _rr.status_code == 200 and len(_rr.text) > 500:
+                                fresh_data = _rr.text
+                except Exception:
+                    pass
+                time.sleep(2)
+                print(Panel(
+                    f"{O}  UID   {W}» {uid}\n"
+                    f"{O}  PASS  {W}» {password}\n"
+                    f"{O}  NAME  {W}» {fname} {lname}\n"
+                    f"{O}  MAIL  {W}» {email}",
+                    title=f"{R}[ ACCOUNT CREATED ]{W}",
+                    border_style="bold red",
+                    padding=(0, 2)
+                ))
                 code = get_temp_code(email)
                 if code:
-                    confirm_id(email, uid, code, reg.text, ses, password, device)
+                    confirm_id(email, uid, code, fresh_data, ses, password)
                 live += 1
                 break
             else:
@@ -1813,52 +1914,90 @@ def register_account(domain_choice, name_option, gender_option):
         except Exception:
             cp += 1
             continue
-
 def main():
     while True:
         clear()
         logo()
-        print(Panel(f"{G}[1] {W}Filipino Names\n{G}[2] {W}RPW Names\n{G}[b] {W}Back", title="NAME OPTION", border_style="bold green"))
-        name_option = Prompt.ask(f"{G}[{Y}✓{G}]{W} Choose Name Option ", choices=["1", "2", "b"], default="1")
+        print(Panel(
+            f"{O}  [1]{W}  Filipino Names\n"
+            f"{O}  [2]{W}  RPW Names\n"
+            f"{GR}  [b]{W}  Exit",
+            title=f"{R}[ NAME STYLE ]{W}",
+            border_style="bold red",
+            padding=(0, 2)
+        ))
+        name_option = Prompt.ask(f"{O}[►]{W} Select", choices=["1", "2", "b"], default="1")
         if name_option == 'b': break
-
         clear(); logo()
-        print(Panel(f"{G}[1] {W}Male\n{G}[2] {W}Female\n{G}[3] {W}Mixed (50% M / 50% F)\n{G}[b] {W}Back", title="GENDER OPTION", border_style="bold green"))
-        gender_option = Prompt.ask(f"{G}[{Y}✓{G}]{W} Choose Gender Option ", choices=["1", "2", "3", "b"], default="3")
+        print(Panel(
+            f"{O}  [1]{W}  Male\n"
+            f"{O}  [2]{W}  Female\n"
+            f"{O}  [3]{W}  Mixed  {GR}(50/50){W}\n"
+            f"{GR}  [b]{W}  Back",
+            title=f"{R}[ GENDER ]{W}",
+            border_style="bold red",
+            padding=(0, 2)
+        ))
+        gender_option = Prompt.ask(f"{O}[►]{W} Select", choices=["1", "2", "3", "b"], default="3")
         if gender_option == 'b': continue
-
         clear(); logo()
-        print(Panel(f"{G}[ b ] {W}Back to Main Menu", border_style="bold green"))
-        custom_pass_input = Prompt.ask(f"{G}[{Y}✓{G}]{W} Enter Custom Password (leave blank for default) ", default="")
+        print(Panel(
+            f"{GR}  Leave blank to use default password\n"
+            f"{GR}  Type  [b]  to go back",
+            title=f"{R}[ PASSWORD ]{W}",
+            border_style="bold red",
+            padding=(0, 2)
+        ))
+        custom_pass_input = Prompt.ask(f"{O}[►]{W} Password", default="")
         if custom_pass_input.lower() == 'b': continue
         global CUSTOM_PASS
         CUSTOM_PASS = custom_pass_input if custom_pass_input else None
-
         clear(); logo()
-        print(Panel(f"{G}[1] {W}yuennix.site\n{G}[2] {W}weyn.store\n{G}[3] {W}Mixed (Random)\n{G}[b] {W}Back", title="DOMAIN SELECTION", border_style="bold green"))
-        domain_choice = Prompt.ask(f"{G}[{Y}✓{G}]{W} Choose Email Option ", choices=["1", "2", "3", "b"], default="3")
+        print(Panel(
+            f"{O}  [1]{W}  jemm.site\n"
+            f"{O}  [2]{W}  yopmail.com\n"
+            f"{O}  [3]{W}  weyn.store\n"
+            f"{O}  [4]{W}  astheia.shop\n" 
+            f"{O}  [5]{W}  jhames.shop\n"
+            f"{O}  [6]{W}  lilearyth.shop\n"
+            f"{O}  [7]{W}  miztyxmm.store\n"
+            f"{O}  [8]{W}  Mixed  {GR}(random){W}\n"
+            f"{GR}  [b]{W}  Back",
+            title=f"{R}[ EMAIL DOMAIN ]{W}",
+            border_style="bold red",
+            padding=(0, 2)
+        ))
+        domain_choice = Prompt.ask(f"{O}[►]{W} Select", choices=["1", "2", "3", "4", "5", "6", "7", "8", "b"], default="3")
         if domain_choice == 'b': continue
-
         clear(); logo()
-        limit_str = Prompt.ask(f"{G}[{Y}✓{G}]{W} How many accounts to create? (or 'b' to back) ", default="10")
+        print(Panel(
+            f"{GR}  Enter the number of accounts to create\n"
+            f"{GR}  Type  [b]  to go back",
+            title=f"{R}[ ACCOUNT LIMIT ]{W}",
+            border_style="bold red",
+            padding=(0, 2)
+        ))
+        limit_str = Prompt.ask(f"{O}[►]{W} Amount", default="10")
         if limit_str.lower() == 'b': continue
         try:
             limit = int(limit_str)
         except ValueError:
             limit = 10
-
         threads = []
         for _ in range(limit):
-            t = threading.Thread(target=register_account, args=(domain_choice, name_option, gender_option), daemon=True)
+            t = threading.Thread(target=register_account, args=(domain_choice, name_option, gender_option))
             t.start()
             threads.append(t)
-            time.sleep(0.2)
-
+            time.sleep(0.05)
         for t in threads:
             t.join()
-
-        print(Panel(f"{G}COMPLETED!{W}\n{G}LIVE: {live}\n{R}CP: {cp}", border_style="bold green"))
-        input("\nPress Enter to return to menu...")
-
+        print(Panel(
+            f"{O}  LIVE  {W}» {live}\n"
+            f"{R}  DEAD  {W}» {cp}",
+            title=f"{R}[ DONE ]{W}",
+            border_style="bold color(124)",
+            padding=(0, 2)
+        ))
+        input(f"\n{GR}  Press Enter to return to menu...{W}")
 if __name__ == "__main__":
     main()
