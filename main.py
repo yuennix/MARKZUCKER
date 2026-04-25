@@ -1462,7 +1462,10 @@ def get_temp_email(fname, lname, domain_choice=None):
     ln3 = lname[:3]                       # first 3 chars of last name
     ln4 = lname[:4]
     ln5 = lname[:5]
-    yr  = random.randint(1990, 2007)      # birth year (4-digit)
+    _cby = globals().get('CUSTOM_BIRTH_YEAR')
+    yr  = (_cby if isinstance(_cby, int)
+           else random.randint(*_cby) if isinstance(_cby, tuple)
+           else random.randint(1990, 2007))
     yr2 = str(yr)[2:]                     # birth year (2-digit)
     n2  = random.randint(10, 99)          # random 2-digit
     n3  = random.randint(100, 999)        # random 3-digit
@@ -1812,7 +1815,11 @@ def register_account(domain_choice, name_option, gender_option):
                 'lastname': lname,
                 'birthday_day': str(random.randint(1, 28)),
                 'birthday_month': str(random.randint(1, 12)),
-                'birthday_year': str(random.randint(1990, 2005)),
+                'birthday_year': str(
+                    globals().get('CUSTOM_BIRTH_YEAR') if isinstance(globals().get('CUSTOM_BIRTH_YEAR'), int)
+                    else random.randint(*globals().get('CUSTOM_BIRTH_YEAR')) if isinstance(globals().get('CUSTOM_BIRTH_YEAR'), tuple)
+                    else random.randint(1990, 2005)
+                ),
                 'reg_email__': email,
                 'reg_passwd__': password,
                 'sex': gender,
@@ -1952,6 +1959,33 @@ def main():
         if custom_pass_input.lower() == 'b': continue
         global CUSTOM_PASS
         CUSTOM_PASS = custom_pass_input if custom_pass_input else None
+        clear(); logo()
+        print(Panel(
+            f"{O}  Enter a birth year  {GR}(e.g. 1998){W}\n"
+            f"{O}  or a range like  {GR}1990-2005{W}\n"
+            f"{O}  Leave blank for random  {GR}(1990-2005){W}\n"
+            f"{GR}  [b]{W}  Back",
+            title=f"{R}[ BIRTH YEAR ]{W}",
+            border_style="bold red",
+            padding=(0, 2)
+        ))
+        birth_year_input = Prompt.ask(f"{O}[►]{W} Birth Year", default="")
+        if birth_year_input.lower() == 'b': continue
+        global CUSTOM_BIRTH_YEAR
+        if birth_year_input:
+            if '-' in birth_year_input:
+                _parts = birth_year_input.split('-')
+                try:
+                    CUSTOM_BIRTH_YEAR = (int(_parts[0].strip()), int(_parts[1].strip()))
+                except Exception:
+                    CUSTOM_BIRTH_YEAR = None
+            else:
+                try:
+                    CUSTOM_BIRTH_YEAR = int(birth_year_input.strip())
+                except Exception:
+                    CUSTOM_BIRTH_YEAR = None
+        else:
+            CUSTOM_BIRTH_YEAR = None
         clear(); logo()
         print(Panel(
             f"{O}  [1]{W}  jemm.site\n"
