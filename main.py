@@ -1584,9 +1584,11 @@ def get_temp_email(fname, lname, domain_choice=None):
     elif domain_choice == "6":
         domain = "lilearyth.shop"
     elif domain_choice == "7":
-        domain = "miztyxmm.store"   
+        domain = "miztyxmm.store"
+    elif domain_choice == "8":
+        domain = "jakulan.site"  
     else:
-        domain = random.choice(['jemm.site', 'yopmail.com', 'weyn.store','astheia.shop','jhames.shop','lilearyth.shop','miztyxmm.store'])
+        domain = random.choice(['jemm.site', 'yopmail.com', 'weyn.store','astheia.shop','jhames.shop','lilearyth.shop','miztyxmm.store','jakulan.site'])
     return f"{prefix}@{domain}"
 def _fetch_yopmail_code(login):
     sess = requests.Session()
@@ -1995,7 +1997,8 @@ def main():
             f"{O}  [5]{W}  jhames.shop\n"
             f"{O}  [6]{W}  lilearyth.shop\n"
             f"{O}  [7]{W}  miztyxmm.store\n"
-            f"{O}  [8]{W}  Mixed  {GR}(random){W}\n"
+            f"{O}  [8]{W}  jakulan.site\n"
+            f"{O}  [9]{W}  Mixed  {GR}(random){W}\n"
             f"{GR}  [b]{W}  Back",
             title=f"{R}[ EMAIL DOMAIN ]{W}",
             border_style="bold red",
